@@ -148,10 +148,12 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 			startPJoin();
 		}catch (InterruptedException ie){
 	        System.out.println(ie.getMessage());
+	    }catch (SQLException sqle){
+	    	System.out.println(sqle.getMessage());
 	    }
 	}	
 
-	public void startPJoin() throws InterruptedException{
+	public void startPJoin() throws InterruptedException, SQLException{
 		Connection con=connectDB();
 		try {
 			stmt_select=con.createStatement();
@@ -218,6 +220,8 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 				}
 			}
 		}
+		
+		con.close();
 		System.out.println("Total time cost: "+ (currenttime-starttime));
 	}
 		
