@@ -14,6 +14,8 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import Objects.PartitionedObject;
+
 /**
  * @author Grant
  *

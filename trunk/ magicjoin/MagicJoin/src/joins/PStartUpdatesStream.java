@@ -2,6 +2,8 @@ package joins;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.lang.Math.*;
+
+import Objects.PartitionedObject;
 /***
  * This program generates the benchmark that we used to test the performance of 
  * our HYBRIDJOIN. As mentioned in the paper our benchmark contains two characteristics.
