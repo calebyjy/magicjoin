@@ -1,4 +1,4 @@
-package Objects;
+package objects;
 
 public class DiskOjbect {
 	public int attr1,attr2,attr3,attr4,attr5;

@@ -1,8 +1,11 @@
-package joins;
+package stream;
 
 import java.util.Random;
 
-import Objects.PartitionedObject;
+import joins.RangeBasedPartitionedJoin;
+
+import objects.PartitionedObject;
+
 
 public class PlainStream extends Thread {
 	

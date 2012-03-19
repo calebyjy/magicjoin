@@ -1,4 +1,4 @@
-package Objects;
+package objects;
 /**
  * @author Grant
  *This class converts input stream tuples into Partitioned Join objects, 

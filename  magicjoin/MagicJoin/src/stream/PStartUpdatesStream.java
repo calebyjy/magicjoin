@@ -1,9 +1,12 @@
-package joins;
+package stream;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.lang.Math.*;
 
-import Objects.PartitionedObject;
+import joins.RangeBasedPartitionedJoin;
+
+import objects.PartitionedObject;
+
 /***
  * This program generates the benchmark that we used to test the performance of 
  * our HYBRIDJOIN. As mentioned in the paper our benchmark contains two characteristics.
@@ -26,7 +29,7 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 	public static double alpha=0.3;
 	
 	
-	PStartUpdatesStream(){
+	public PStartUpdatesStream(){
 		
 	}
 	public int compareTo(Object o) {

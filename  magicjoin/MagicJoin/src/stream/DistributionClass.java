@@ -1,4 +1,4 @@
-package joins;
+package stream;
 import java.util.Random;
 /**
  * This program generates the distribution based on Zipf's Law with exponent -1 and 

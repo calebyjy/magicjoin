@@ -14,7 +14,9 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import Objects.PartitionedObject;
+import objects.PartitionedObject;
+import stream.PStartUpdatesStream;
+
 
 /**
  * @author Grant
@@ -66,7 +68,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 	//	static PartitionedObject wBuffer[][]=new PartitionedObject[P_NUMBER][];//!!!the array size here need be specified later
 	
 	static ArrayList<LinkedList<PartitionedObject>> wBuffer=new ArrayList<LinkedList<PartitionedObject>>(P_NUMBER);
-	static ArrayBlockingQueue<PartitionedObject> inBuffer = new ArrayBlockingQueue<PartitionedObject>(INPUT_BUFFER);
+	public static ArrayBlockingQueue<PartitionedObject> inBuffer = new ArrayBlockingQueue<PartitionedObject>(INPUT_BUFFER);
 	
 	Connection conn=null;
 	Statement stmt_select;
