@@ -12,5 +12,8 @@
 	<classpathentry kind="lib" path="library/mysql-connector-java-5.1.17-bin.jar"/>
 	<classpathentry kind="lib" path="library/servlet.jar"/>
 	<classpathentry kind="lib" path="library/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="library/collections-generic-4.01.jar"/>
+	<classpathentry kind="lib" path="library/commons-collections-testframework-4.01.jar"/>
+	<classpathentry kind="lib" path="library/sizeofag.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
