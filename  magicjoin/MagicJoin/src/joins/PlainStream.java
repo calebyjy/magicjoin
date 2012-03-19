@@ -2,6 +2,8 @@ package joins;
 
 import java.util.Random;
 
+import Objects.PartitionedObject;
+
 public class PlainStream extends Thread {
 	
 	public static long t=0;
