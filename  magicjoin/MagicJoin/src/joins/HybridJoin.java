@@ -43,7 +43,7 @@ public class HybridJoin {
 	Random myRandom=new Random();
 	Statement stmt=null;
 	ResultSet rs=null;
-	Queue head,currentNode;
+	DoubleLinkQueue head,currentNode;
 	CalculateAccessPageFrequencyOfR CAPFR=new CalculateAccessPageFrequencyOfR();
 	int streamRandomValue;
 	int requiredTuplesCount=0;
@@ -119,7 +119,7 @@ public class HybridJoin {
 		random=myRandom.nextDouble();
 		rawFK = inverseIntegral(random*sumOfFrequency+minimumLimit);
 		streamRandomValue=(int)rawFK;
-		head=new Queue(streamRandomValue);
+		head=new DoubleLinkQueue(streamRandomValue);
 		currentNode=head;
 		mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode,-1));
 		oneNodeSize=SizeOfAgent.fullSizeOf(head);
@@ -164,7 +164,7 @@ public class HybridJoin {
 					firstNode=false;
 					lastNode=false;
 					//Remove expire tuples from Q and H
-					Queue deleteNodeAddress=list.get(listItem).nodeAddress;
+					DoubleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress;
 					if(deleteNodeAddress==head){
 						head=deleteNodeAddress.getNext();
 						firstNode=true;

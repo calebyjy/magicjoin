@@ -1,6 +1,6 @@
 package objects;
 
-import joins.Queue;
+import joins.DoubleLinkQueue;
 
 /**
  * This class only convert the stream attributes values in the form of HYBRIDJOIN
@@ -12,9 +12,9 @@ import joins.Queue;
 public class HybridJoinObject {
 			public int attr1,attr2,attr3,attr4,attr5;
 			public long arrivalTime=0;
-			public Queue nodeAddress;
+			public DoubleLinkQueue nodeAddress;
 
-		public HybridJoinObject(int attr1,int attr2, int attr3, int attr4, int attr5,Queue nodeAddress, long arrivalTime){
+		public HybridJoinObject(int attr1,int attr2, int attr3, int attr4, int attr5,DoubleLinkQueue nodeAddress, long arrivalTime){
 			this.attr1=attr1;
 			this.attr2=attr2;
 			this.attr3=attr3;
