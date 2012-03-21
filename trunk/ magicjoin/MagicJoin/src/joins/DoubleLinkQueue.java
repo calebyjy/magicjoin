@@ -10,17 +10,17 @@ package joins;
  *
  */
 
-public class Queue {
+public class DoubleLinkQueue {
 	private int item;
-	private Queue precede;
-	private Queue next;
+	private DoubleLinkQueue precede;
+	private DoubleLinkQueue next;
 	
-	public Queue(){
+	public DoubleLinkQueue(){
 		this.precede=null;
 		this.next=null;
 	}
 	
-	public Queue(int item) {
+	public DoubleLinkQueue(int item) {
 		this.item = item;
 		this.precede = null;
 		this.next = null;
@@ -30,11 +30,11 @@ public class Queue {
 		return item;
 	}
 	
-	public Queue getPrecede() {
+	public DoubleLinkQueue getPrecede() {
 		return this.precede;
 	}
 	
-	public Queue getNext() {
+	public DoubleLinkQueue getNext() {
 			return this.next;
 	}
 	
@@ -42,16 +42,16 @@ public class Queue {
 		this.item = item;		
 	}
 	
-	public void setPrecede(Queue precede) {
+	public void setPrecede(DoubleLinkQueue precede) {
 		this.precede = precede;
 	}
 	
-	public void setNext(Queue next) {
+	public void setNext(DoubleLinkQueue next) {
 		this.next = next;	
 	}
 
-	public Queue addNode(int value){
-		Queue nextNode=new Queue(value);
+	public DoubleLinkQueue addNode(int value){
+		DoubleLinkQueue nextNode=new DoubleLinkQueue(value);
 		this.setNext(nextNode);
 		nextNode.setPrecede(this);
 		nextNode.setNext(null);
@@ -75,14 +75,14 @@ public class Queue {
 		return this.next.item;
 	}
 	public void displayList(){
-		Queue start=this.getNext();
+		DoubleLinkQueue start=this.getNext();
 		while(start!=null){
 			System.out.println(start.getItem());
 			start=start.getNext();
 		}
 	}
 	public int countNodes(){
-		Queue currentNode=this;
+		DoubleLinkQueue currentNode=this;
 		int count=0;
 		while(currentNode.getNext()!=null){
 			currentNode=currentNode.getNext();
