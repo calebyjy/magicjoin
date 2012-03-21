@@ -79,7 +79,7 @@ public class HybridJoin {
 		try{
 		
 			String userName = "root";
-			String password = "root";
+			String password = "sunshine";
 			String url = "jdbc:mysql://localhost/jdbctest";
 			Class.forName ("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection (url, userName, password);
