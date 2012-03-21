@@ -1,4 +1,7 @@
 package objects;
+
+import joins.Queue;
+
 /**
  * This class only convert the stream attributes values in the form of HYBRIDJOIN
  * Object before storing into hash table
