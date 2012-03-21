@@ -80,7 +80,7 @@ public class HybridJoin {
 		
 			String userName = "root";
 			String password = "sunshine";
-			String url = "jdbc:mysql://localhost/jdbctest";
+			String url = "jdbc:mysql://localhost/testdata";
 			Class.forName ("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection (url, userName, password);
 			System.out.println("Connected to Database");
@@ -212,7 +212,7 @@ public class HybridJoin {
 		//Read into disk buffer
 		try{
 			start=System.nanoTime();
-			rs=stmt.executeQuery("SELECT * from lookup_table_twomillion where attr1>="+index+" AND attr1<"+(index+PAGE_SIZE)+"");
+			rs=stmt.executeQuery("SELECT * from rpjoin where attr1>="+index+" AND attr1<"+(index+PAGE_SIZE)+"");
 			stop=System.nanoTime();
 			if(measurementStart){
 				CIO[CIO_index++]=stop-start;
