@@ -16,6 +16,8 @@ import sizeof.agent.SizeOfAgent;
 import objects.HybridJoinObject;
 import objects.MeshJoinObject;
 import objects.Queue;
+import stream.CalculateAccessPageFrequencyOfR;
+import stream.StartUpdatesStream;
 /**
  * This program measures the waiting time and processing time in HYBRIDJOIN. In addition this also
  * calculates the processing cost for each loop iteration that is used to calculate the
@@ -38,7 +40,7 @@ public class HybridJoin {
 		
 	static MultiMap<Integer,HybridJoinObject> mhm=new MultiHashMap<Integer,HybridJoinObject>();
 	static ArrayList <HybridJoinObject> list=new ArrayList<HybridJoinObject>();
-	static LinkedBlockingQueue<MeshJoinObject> streamBuffer=new LinkedBlockingQueue<MeshJoinObject>();
+	public static LinkedBlockingQueue<MeshJoinObject> streamBuffer=new LinkedBlockingQueue<MeshJoinObject>();
 	static int diskBuffer[][]=new int[PAGE_SIZE][30];
 	Random myRandom=new Random();
 	Statement stmt=null;
@@ -48,14 +50,24 @@ public class HybridJoin {
 	int streamRandomValue;
 	int requiredTuplesCount=0;
 	static long CE[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
-	static long CS[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
+	public static long CS[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
 	static long CA[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
 	static long CIO[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
 	static long CH[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
 	static int streamInputSize[]=new int[DISK_RELATION_SIZE/PAGE_SIZE];
 	int queueStatus[]=new int[DISK_RELATION_SIZE/PAGE_SIZE];
 	long waitingTime[]=new long [DISK_RELATION_SIZE];
-	static int CE_index=0,CS_index=0,CA_index=0,CIO_index=0,CH_index=0,pt_index=0,input_index=0,queue_index=0,rt_index=0,bl_index=0,WT_index=0;
+	static int CE_index=0;
+	public static int CS_index=0;
+	static int CA_index=0;
+	static int CIO_index=0;
+	static int CH_index=0;
+	static int pt_index=0;
+	static int input_index=0;
+	static int queue_index=0;
+	static int rt_index=0;
+	static int bl_index=0;
+	static int WT_index=0;
 
 	float oneNodeSize=0,memoryForFiftyTuples=0;
 	boolean measurementStart=false;

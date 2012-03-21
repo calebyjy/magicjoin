@@ -16,11 +16,11 @@ import objects.PartitionedObject;
   */
 
 public class PStartUpdatesStream extends Thread implements Comparable<Object>{
-	public static TimeManager2 time;
+	public static TimeManager1 time;
 	public boolean on=false;
 	public double timeInChosenUnit;
 	public DistributionClass distribution;
-	public MyQueue2 ownQueue;
+	public MyQueue1 ownQueue;
 	public double bandwidth;
 	Random myRandom=new Random();
 	
@@ -47,7 +47,7 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 	     }
 	}
 	
-	public PStartUpdatesStream(MyQueue2 ownQueue, DistributionClass distribution, double bandwidth){
+	public PStartUpdatesStream(MyQueue1 ownQueue, DistributionClass distribution, double bandwidth){
 		this.distribution=distribution;
 		this.ownQueue=ownQueue;
 		this.bandwidth=bandwidth;
@@ -57,7 +57,7 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 	
 	public void swapStatus(){
 		
-		timeInChosenUnit+=distribution.getNextDistributionValue()*TimeManager2.STEP*bandwidth;
+		timeInChosenUnit+=distribution.getNextDistributionValue()*TimeManager1.STEP*bandwidth;
 		
 		if(on){
 			ownQueue.totalCurrentBandwidth-=bandwidth;
@@ -74,8 +74,8 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 		
 		DistributionClass distribution=new DistributionClass();
 		DistributionClass generator=new DistributionClass();
-		TimeManager2 time=new TimeManager2();
-		MyQueue2 myQueue=new MyQueue2();
+		TimeManager1 time=new TimeManager1();
+		MyQueue1 myQueue=new MyQueue1();
 		int tuple=0,tupleValue=0;int n=0;
 //		int count=0;
 		int e=0;
@@ -143,7 +143,7 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 }
 
 
-class TimeManager2{
+class TimeManager1{
 	public final static int STEP=15;
 	public double now(){
 		return(System.nanoTime());
@@ -157,7 +157,7 @@ class TimeManager2{
 	}
 }
 
-class MyQueue2 extends PriorityQueue<PStartUpdatesStream>{
+class MyQueue1 extends PriorityQueue<PStartUpdatesStream>{
 	private static final long serialVersionUID = 1L;
 	public long totalCurrentBandwidth=0;
 }
