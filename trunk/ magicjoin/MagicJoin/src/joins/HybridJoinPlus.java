@@ -1,5 +1,6 @@
 package joins;
 
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -23,7 +24,7 @@ import stream.StartUpdatesStream;
  * @author asif
  *
  */
-public class HybridJoin {
+public class HybridJoinPlus {
 	public static final int HASH_SIZE=317597;
 	public static final int QUEUE_SIZE=HASH_SIZE;
 	public static final int STREAM_SIZE=50000;
@@ -70,7 +71,7 @@ public class HybridJoin {
 	float oneNodeSize=0,memoryForFiftyTuples=0;
 	boolean measurementStart=false;
 	double sumOfFrequency,random,rawFK,minimumLimit;
-	HybridJoin(){
+	HybridJoinPlus(){
 		
 	}
 	
@@ -265,7 +266,7 @@ public class HybridJoin {
 	
 
 public static void main(String args[])throws java.io.IOException, InterruptedException{
-	HybridJoin hj=new HybridJoin();
+	HybridJoinPlus hj=new HybridJoinPlus();
 	StartUpdatesStream stream=new StartUpdatesStream();
 	System.out.println("Hybrid Join in execution mode...");
 	hj.fillHashTable();
@@ -295,7 +296,7 @@ public static void main(String args[])throws java.io.IOException, InterruptedExc
 	System.out.println("Memory used by Hash Table:  "+Hash+"  MB");
 	System.out.println("Memory used by Queue:  "+Queue+" MB");
 	System.out.println("Memory used by buffer b :  "+bufferb+"  MB");
-	System.out.println("pt_index"+HybridJoin.pt_index+"CH_index: "+HybridJoin.CH_index+" CS_Index: "+HybridJoin.CS_index+" CA_index: "+HybridJoin.CA_index+" CE_index: "+HybridJoin.CE_index+" CIO_index: "+HybridJoin.CIO_index);
+	System.out.println("pt_index"+HybridJoinPlus.pt_index+"CH_index: "+HybridJoinPlus.CH_index+" CS_Index: "+HybridJoinPlus.CS_index+" CA_index: "+HybridJoinPlus.CA_index+" CE_index: "+HybridJoinPlus.CE_index+" CIO_index: "+HybridJoinPlus.CIO_index);
 	hj.closeConnection(conn);
 	
 	//To calculate the access frequency of R
@@ -311,7 +312,7 @@ public static void main(String args[])throws java.io.IOException, InterruptedExc
 		R+=R;
 	}
 	*/
-	System.out.println("\nStream tuples in back log:"+HybridJoin.streamBuffer.size());
+	System.out.println("\nStream tuples in back log:"+HybridJoinPlus.streamBuffer.size());
 	System.out.println("Room for more tuples:"+hj.requiredTuplesCount);
 	System.out.println("Queue status:"+hj.head.countNodes());
 	
@@ -330,13 +331,13 @@ public static void main(String args[])throws java.io.IOException, InterruptedExc
 	bw.write("Input(w)     CH(NSec)\t    CS(NSec)\t    CA(NSec)\t      CE(NSec)\t    CIO(NSec)");
 	bw.newLine();
 	
-	for(int i=0; i<HybridJoin.CIO_index; i++){
-		bw.write(HybridJoin.streamInputSize[i]+"\t\t");
-		bw.write(HybridJoin.CH[i]+"\t\t");
-		bw.write(HybridJoin.CS[i]+"\t\t");
-		bw.write(HybridJoin.CA[i]+"\t\t");
-		bw.write(HybridJoin.CE[i]+"\t\t");
-		bw.write(HybridJoin.CIO[i]+"");
+	for(int i=0; i<HybridJoinPlus.CIO_index; i++){
+		bw.write(HybridJoinPlus.streamInputSize[i]+"\t\t");
+		bw.write(HybridJoinPlus.CH[i]+"\t\t");
+		bw.write(HybridJoinPlus.CS[i]+"\t\t");
+		bw.write(HybridJoinPlus.CA[i]+"\t\t");
+		bw.write(HybridJoinPlus.CE[i]+"\t\t");
+		bw.write(HybridJoinPlus.CIO[i]+"");
 		bw.newLine();
 	}
 	bw.close();

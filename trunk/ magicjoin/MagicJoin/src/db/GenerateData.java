@@ -30,7 +30,7 @@ public class GenerateData {
 	public static void createRPJOIN(Connection con) throws SQLException{
 		Statement stmt=null;
 		System.out.println("create processing...");
-		String query="CREATE TABLE RPJOIN2 "
+		String query="CREATE TABLE RPJOIN "
 				+ "(attr1 INT UNSIGNED NOT NULL AUTO_INCREMENT,"
 				+ "attr2 INT UNSIGNED,"
 				+ "attr3 INT UNSIGNED,"
@@ -76,7 +76,7 @@ public class GenerateData {
 	
 	public static void insertRecord(int i, Connection con) throws SQLException{
 		Statement stmt=null;
-		String query="INSERT INTO RPJOIN2(attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15,attr16,attr17,attr18,attr19,attr20,attr21,attr22,attr23,attr24,attr25,attr26,attr27,attr28,attr29,attr30) VALUES"
+		String query="INSERT INTO RPJOIN(attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15,attr16,attr17,attr18,attr19,attr20,attr21,attr22,attr23,attr24,attr25,attr26,attr27,attr28,attr29,attr30) VALUES"
 				+ "(" +i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","
 				+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","
 				+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+","+i+")";
@@ -182,7 +182,7 @@ public class GenerateData {
 			System.err.println("Failed to connect.");
 		}
 		try {
-			    createRPJOIN(con);
+			    //createRPJOIN(con);
 				/*for(int i=0;i<16000000;i++){
 				int rc=rd1.nextInt(25);
 				int rn=rd2.nextInt(25);
