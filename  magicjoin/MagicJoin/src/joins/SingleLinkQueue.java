@@ -36,7 +36,6 @@ public class SingleLinkQueue {
 		this.item = item;		
 	}
 
-	}
 	
 	public void setNext(SingleLinkQueue next) {
 		this.next = next;	
@@ -49,16 +48,14 @@ public class SingleLinkQueue {
 		return nextNode;
 	}
 	
-	public void deleteNode(boolean firstNode, boolean lastNode){
-		if(firstNode){
-			this.next.precede=null;
-		}
-		else if(lastNode){
-			this.precede.next=null;
+	public void deleteNode(boolean lastNode){
+		if(lastNode){
+			this.item=this.next.item;
+			this.next=null;
 		}
 		else{
-			this.precede.next=this.next;
-			this.next.precede=this.precede;
+			this.item=this.next.item;
+			this.next=this.next.next;
 		}
 	}
 	
