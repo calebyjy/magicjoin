@@ -44,7 +44,7 @@ public class HybridJoinPlus {
 	Random myRandom=new Random();
 	Statement stmt=null;
 	ResultSet rs=null;
-	DoubleLinkQueue head,currentNode;
+	SingleLinkQueue head,currentNode;
 	CalculateAccessPageFrequencyOfR CAPFR=new CalculateAccessPageFrequencyOfR();
 	int streamRandomValue;
 	int requiredTuplesCount=0;
@@ -120,7 +120,7 @@ public class HybridJoinPlus {
 		random=myRandom.nextDouble();
 		rawFK = inverseIntegral(random*sumOfFrequency+minimumLimit);
 		streamRandomValue=(int)rawFK;
-		head=new DoubleLinkQueue(streamRandomValue);
+		head=new SingleLinkQueue(streamRandomValue);
 		currentNode=head;
 		mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode,-1));
 		oneNodeSize=SizeOfAgent.fullSizeOf(head);
@@ -165,17 +165,13 @@ public class HybridJoinPlus {
 					firstNode=false;
 					lastNode=false;
 					//Remove expire tuples from Q and H
-					DoubleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress;
-					if(deleteNodeAddress==head){
-						head=deleteNodeAddress.getNext();
-						firstNode=true;
-					}
-					if(deleteNodeAddress==currentNode){
-						currentNode=deleteNodeAddress.getPrecede();
+					SingleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress2;
+					if(deleteNodeAddress.getNext()==currentNode){
+						currentNode=deleteNodeAddress;
 						lastNode=true;
 					}
 					start=System.nanoTime();
-					deleteNodeAddress.deleteNode(firstNode,lastNode);
+					deleteNodeAddress.deleteNode(lastNode);
 					stop=System.nanoTime();
 					//Delay measurement in queue
 					/*

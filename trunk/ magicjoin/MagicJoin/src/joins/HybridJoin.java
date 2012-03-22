@@ -164,7 +164,7 @@ public class HybridJoin {
 					firstNode=false;
 					lastNode=false;
 					//Remove expire tuples from Q and H
-					DoubleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress;
+					DoubleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress1;
 					if(deleteNodeAddress==head){
 						head=deleteNodeAddress.getNext();
 						firstNode=true;
