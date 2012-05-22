@@ -35,7 +35,7 @@ public class HybridJoin {
 	//***************MEASUREMENT LIMITS************
 	public static final int MEASUREMENT_START=1;
 	public static final int MEASUREMENT_STOP=DISK_RELATION_SIZE;
-		
+		 
 	static MultiMap<Integer,HybridJoinObject> mhm=new MultiHashMap<Integer,HybridJoinObject>();
 	static ArrayList <HybridJoinObject> list=new ArrayList<HybridJoinObject>();
 	public static LinkedBlockingQueue<MeshJoinObject> streamBuffer=new LinkedBlockingQueue<MeshJoinObject>();
@@ -140,7 +140,7 @@ public class HybridJoin {
 	}
 	
 	public void probIntoHash(){
-		long start=0,stop=0,CH_per_Iteration=0,CEH_per_Iteration=0,CEQ_per_Iteration=0;
+		long start=0,stop=0,CH_per_Iteration=0, CEH_per_Iteration=0,CEQ_per_Iteration=0;
 		boolean firstNode=false,lastNode=false;
 		int processedTuplesCount=0;
 		int index=head.popNode();
@@ -256,9 +256,7 @@ public class HybridJoin {
 		if(measurementStart){
 		
 			CA[CA_index++]=CA_per_Iteration/eachInputSize;
-			streamInputSize[input_index++]=eachInputSize;
-			
-			
+			streamInputSize[input_index++]=eachInputSize;			
 		}
 		
 	}
