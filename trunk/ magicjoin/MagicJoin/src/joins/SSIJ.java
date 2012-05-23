@@ -2,6 +2,7 @@ package joins;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,7 +25,10 @@ import stream.StartUpdatesStream;
  *
  */
 public class SSIJ {
-	public static LinkedBlockingQueue<MeshJoinObject> streamBuffer=new LinkedBlockingQueue<MeshJoinObject>();
+	//this buffer is used to store incoming update tuples before load them into the Input Buffer
+	public static LinkedBlockingQueue<MeshJoinObject> inBuffer=new LinkedBlockingQueue<MeshJoinObject>();
+	//Input Buffer (use ArrayBlockingQueue due to its size
+	static ArrayBlockingQueue<Object> abq=new ArrayBlockingQueue<Object>(QUEUE_SIZE);
 
 		
 	public Connection connectDB(){
