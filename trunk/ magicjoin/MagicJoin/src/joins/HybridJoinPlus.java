@@ -16,7 +16,7 @@ import org.apache.commons.collections15.multimap.MultiHashMap;
 import sizeof.agent.SizeOfAgent;
 import objects.HybridJoinObject;
 import objects.MeshJoinObject;
-import stream.StartUpdatesStream;
+import stream.HybridjoinStartUpdatesStream;
 /**
  * This program measures the waiting time and processing time in HYBRIDJOIN. In addition this also
  * calculates the processing cost for each loop iteration that is used to calculate the
@@ -268,7 +268,7 @@ public class HybridJoinPlus {
 
 public static void main(String args[])throws java.io.IOException, InterruptedException{
 	HybridJoinPlus hj=new HybridJoinPlus();
-	StartUpdatesStream stream=new StartUpdatesStream();
+	HybridjoinStartUpdatesStream stream=new HybridjoinStartUpdatesStream();
 	System.out.println("Hybrid Join in execution mode...");
 	hj.fillHashTable();
 	Connection conn=hj.connectDB();

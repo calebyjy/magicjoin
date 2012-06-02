@@ -15,7 +15,7 @@ import joins.HybridJoin;
  * Our benchmark implements the Zipfian distribution which is one kind of Power's Law.
   */
 
-public class StartUpdatesStream extends Thread implements Comparable<Object>{
+public class HybridjoinStartUpdatesStream extends Thread implements Comparable<Object>{
 	public static TimeManager2 time;
 	public boolean on=false;
 	public double timeInChosenUnit;
@@ -24,11 +24,11 @@ public class StartUpdatesStream extends Thread implements Comparable<Object>{
 	public double bandwidth;
 	Random myRandom=new Random();
 	
-	public StartUpdatesStream(){
+	public HybridjoinStartUpdatesStream(){
 		
 	}
 	public int compareTo(Object o) {
-		StartUpdatesStream y = (StartUpdatesStream) o;
+		HybridjoinStartUpdatesStream y = (HybridjoinStartUpdatesStream) o;
 		   double diff = this.timeInChosenUnit - y.timeInChosenUnit;
 		   if(diff < 0.0) return -1;
 		   if(diff > 0.0) return 1;
@@ -42,7 +42,7 @@ public class StartUpdatesStream extends Thread implements Comparable<Object>{
 	     }
 	}
 	
-	StartUpdatesStream(MyQueue2 ownQueue, DistributionClass distribution, double bandwidth){
+	HybridjoinStartUpdatesStream(MyQueue2 ownQueue, DistributionClass distribution, double bandwidth){
 		this.distribution=distribution;
 		this.ownQueue=ownQueue;
 		this.bandwidth=bandwidth;
@@ -75,14 +75,14 @@ public class StartUpdatesStream extends Thread implements Comparable<Object>{
 		int count=0;
 		long CS_per_Iteration=0,start=0,stop=0;
 		for(int i=0; i<6; i++){
-			new StartUpdatesStream(myQueue,distribution,Math.pow(2,i));
+			new HybridjoinStartUpdatesStream(myQueue,distribution,Math.pow(2,i));
 		}
-		StartUpdatesStream current=(StartUpdatesStream)myQueue.poll();
+		HybridjoinStartUpdatesStream current=(HybridjoinStartUpdatesStream)myQueue.poll();
 		while(true){
 			tuple=0;
 			time.waitOneStep();
 			while(time.now()>current.timeInChosenUnit){
-				current=(StartUpdatesStream)myQueue.poll();
+				current=(HybridjoinStartUpdatesStream)myQueue.poll();
 				current.swapStatus();
 			}
 			while(tuple<myQueue.totalCurrentBandwidth){
@@ -120,7 +120,7 @@ class TimeManager2{
 	}
 }
 
-class MyQueue2 extends PriorityQueue<StartUpdatesStream>{
+class MyQueue2 extends PriorityQueue<HybridjoinStartUpdatesStream>{
 	private static final long serialVersionUID = 1L;
 	public long totalCurrentBandwidth=0;
 }

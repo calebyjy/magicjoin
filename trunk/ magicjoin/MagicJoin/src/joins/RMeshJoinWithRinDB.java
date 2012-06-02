@@ -84,7 +84,7 @@ public class RMeshJoinWithRinDB {
 	double sumOfFrequency=0,minimumLimit=0,random=0,rawFK=0;
 	int streamRandomValue=0;
 	Random myRandom=new Random();
-	StartUpdatesStream stream=new StartUpdatesStream();
+	HybridjoinStartUpdatesStream stream=new HybridjoinStartUpdatesStream();
 
 	RMeshJoinWithRinDB(){
 

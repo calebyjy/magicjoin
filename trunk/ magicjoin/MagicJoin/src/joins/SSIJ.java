@@ -16,7 +16,7 @@ import org.apache.commons.collections15.multimap.MultiHashMap;
 import sizeof.agent.SizeOfAgent;
 import objects.HybridJoinObject;
 import objects.MeshJoinObject;
-import stream.StartUpdatesStream;
+import stream.HybridjoinStartUpdatesStream;
 /**
  * This program measures the waiting time and processing time in HYBRIDJOIN. In addition this also
  * calculates the processing cost for each loop iteration that is used to calculate the

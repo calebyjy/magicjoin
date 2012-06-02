@@ -15,7 +15,7 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import objects.PartitionedObject;
-import stream.PStartUpdatesStream;
+import stream.PartitionjoinStartUpdatesStream;
 
 
 /**
@@ -139,7 +139,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 
 		
 		RangeBasedPartitionedJoin rpj=new RangeBasedPartitionedJoin();
-		PStartUpdatesStream stream=new PStartUpdatesStream();
+		PartitionjoinStartUpdatesStream stream=new PartitionjoinStartUpdatesStream();
 		//PlainStream stream=new PlainStream();
 		System.out.println("Ranged-based partition Join in execution mode...");
 		stream.start();
@@ -490,7 +490,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 		for (int i=0;i<JOIN_BUFFER_SIZE;i++){
 			if (jMemoryInfo[i]==p) {
 				jl=i;
-				System.out.println("jl= "+i);
+				System.out.println(" = "+i);
 				System.out.println("p= "+p);
 				match=true; 
 				break;

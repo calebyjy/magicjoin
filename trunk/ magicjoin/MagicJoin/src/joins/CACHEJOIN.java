@@ -16,6 +16,7 @@ import objects.HybridJoinObject;
 import org.apache.commons.collections15.MultiMap;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import sizeof.agent.SizeOfAgent;
+import stream.HybridjoinStartUpdatesStream;
 
 /**
  * This program implements our CACHEJOIN algorithm. It calculates the processing cost for
@@ -262,7 +263,7 @@ public class CACHEJOIN {
 				for(int listItem=0; listItem<list.size(); listItem++){
 					firstNode=false;
 					lastNode=false;
-					deleteNodeAddress=list.get(listItem).nodeAddress;
+					deleteNodeAddress=list.get(listItem).nodeAddress1;
 					if(deleteNodeAddress==head){
 						head=deleteNodeAddress.getNext();
 						firstNode=true;
@@ -306,7 +307,7 @@ public class CACHEJOIN {
 			else{
 				start=System.nanoTime();
 				currentNode=currentNode.addNode(streamBuffer.peek().attr1);
-				mhm.put(new Integer(streamBuffer.peek().attr1),new HybridJoinObject(streamBuffer.peek().attr1,streamBuffer.peek().attr2,streamBuffer.peek().attr3,streamBuffer.peek().attr4,streamBuffer.peek().attr5,currentNode));
+				mhm.put(new Integer(streamBuffer.peek().attr1),new HybridJoinObject(streamBuffer.peek().attr1,streamBuffer.peek().attr2,streamBuffer.peek().attr3,streamBuffer.peek().attr4,streamBuffer.peek().attr5,currentNode,System.currentTimeMillis()));
 				streamBuffer.poll();
 				stop=System.nanoTime();
 				if(measurementStart){
@@ -332,7 +333,7 @@ public class CACHEJOIN {
 	public static void main(String args[])throws java.io.IOException, InterruptedException{
 
 		CACHEJOIN hj=new CACHEJOIN();
-		StartUpdatesStream stream=new StartUpdatesStream();
+		HybridjoinStartUpdatesStream stream=new HybridjoinStartUpdatesStream();
 		dhtm=new DiskHashTableManipulation();
 		boolean tupleInMD=true;
 		System.out.println("Hybrid Join in execution mode...");

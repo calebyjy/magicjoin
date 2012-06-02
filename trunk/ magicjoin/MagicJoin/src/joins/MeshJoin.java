@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import sizeof.agent.*;
-import stream.StartUpdatesStream;
+import stream.HybridjoinStartUpdatesStream;
 import objects.MeshJoinObject;
 
 import org.apache.commons.collections15.MultiMap;
@@ -90,7 +90,7 @@ public class MeshJoin {
 	double sumOfFrequency=0,minimumLimit=0,random=0,rawFK=0;
 	int streamRandomValue=0;
 	Random myRandom=new Random();
-	StartUpdatesStream stream=new StartUpdatesStream();
+	HybridjoinStartUpdatesStream stream=new HybridjoinStartUpdatesStream();
 	
 	MeshJoin(){
 		
