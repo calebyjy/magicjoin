@@ -337,7 +337,7 @@ public class HybridJoinWithRandomDM {
 	 */
 	public static void main(String args[])throws java.io.IOException, InterruptedException{
 		HybridJoinWithRandomDM hj=new HybridJoinWithRandomDM();
-		StartUpdatesStream stream=new StartUpdatesStream();
+		HybridjoinStartUpdatesStream stream=new HybridjoinStartUpdatesStream();
 		boolean tupleInMD=true;
 		System.out.println("Hybrid Join in execution mode...");
 		hj.fillHashTable();

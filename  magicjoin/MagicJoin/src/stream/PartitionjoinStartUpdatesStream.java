@@ -15,7 +15,7 @@ import objects.PartitionedObject;
  * Our benchmark implements the Zipfian distribution which is one kind of Power's Law.
   */
 
-public class PStartUpdatesStream extends Thread implements Comparable<Object>{
+public class PartitionjoinStartUpdatesStream extends Thread implements Comparable<Object>{
 	public static TimeManager1 time;
 	public boolean on=false;
 	public double timeInChosenUnit;
@@ -29,11 +29,11 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 	public static double alpha=0.3;
 	
 	
-	public PStartUpdatesStream(){
+	public PartitionjoinStartUpdatesStream(){
 		
 	}
 	public int compareTo(Object o) {
-		PStartUpdatesStream y = (PStartUpdatesStream) o;
+		PartitionjoinStartUpdatesStream y = (PartitionjoinStartUpdatesStream) o;
 		   double diff = this.timeInChosenUnit - y.timeInChosenUnit;
 		   if(diff < 0.0) return -1;
 		   if(diff > 0.0) return 1;
@@ -47,7 +47,7 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 	     }
 	}
 	
-	public PStartUpdatesStream(MyQueue1 ownQueue, DistributionClass distribution, double bandwidth){
+	public PartitionjoinStartUpdatesStream(MyQueue1 ownQueue, DistributionClass distribution, double bandwidth){
 		this.distribution=distribution;
 		this.ownQueue=ownQueue;
 		this.bandwidth=bandwidth;
@@ -82,9 +82,9 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 		//comment for a moment
 		//long CS_per_Iteration=0,start=0,stop=0;
 		for(int i=0; i<6; i++){
-			new PStartUpdatesStream(myQueue,distribution,Math.pow(2,i));
+			new PartitionjoinStartUpdatesStream(myQueue,distribution,Math.pow(2,i));
 		}
-		PStartUpdatesStream current=(PStartUpdatesStream)myQueue.poll();
+		PartitionjoinStartUpdatesStream current=(PartitionjoinStartUpdatesStream)myQueue.poll();
 		while(true){			
 						
 			int eTuple[];
@@ -93,7 +93,7 @@ public class PStartUpdatesStream extends Thread implements Comparable<Object>{
 				eTuple=new int[RangeBasedPartitionedJoin.P_NUMBER];
 //				time.waitOneStep();
 				while (time.now() > current.timeInChosenUnit) {
-					current = (PStartUpdatesStream) myQueue.poll();
+					current = (PartitionjoinStartUpdatesStream) myQueue.poll();
 					current.swapStatus();
 				}
 				while (tuple < myQueue.totalCurrentBandwidth) {
@@ -157,7 +157,7 @@ class TimeManager1{
 	}
 }
 
-class MyQueue1 extends PriorityQueue<PStartUpdatesStream>{
+class MyQueue1 extends PriorityQueue<PartitionjoinStartUpdatesStream>{
 	private static final long serialVersionUID = 1L;
 	public long totalCurrentBandwidth=0;
 }
