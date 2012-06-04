@@ -16,11 +16,11 @@ import objects.PartitionedObject;
   */
 
 public class PartitionjoinStartUpdatesStream extends Thread implements Comparable<Object>{
-	public static TimeManager1 time;
+	public static TimeManagerPJ time;
 	public boolean on=false;
 	public double timeInChosenUnit;
 	public DistributionClass distribution;
-	public MyQueue1 ownQueue;
+	public MyQueuePJ ownQueue;
 	public double bandwidth;
 	Random myRandom=new Random();
 	
@@ -47,7 +47,7 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 	     }
 	}
 	
-	public PartitionjoinStartUpdatesStream(MyQueue1 ownQueue, DistributionClass distribution, double bandwidth){
+	public PartitionjoinStartUpdatesStream(MyQueuePJ ownQueue, DistributionClass distribution, double bandwidth){
 		this.distribution=distribution;
 		this.ownQueue=ownQueue;
 		this.bandwidth=bandwidth;
@@ -57,7 +57,7 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 	
 	public void swapStatus(){
 		
-		timeInChosenUnit+=distribution.getNextDistributionValue()*TimeManager1.STEP*bandwidth;
+		timeInChosenUnit+=distribution.getNextDistributionValue()*TimeManagerPJ.STEP*bandwidth;
 		
 		if(on){
 			ownQueue.totalCurrentBandwidth-=bandwidth;
@@ -74,8 +74,8 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 		
 		DistributionClass distribution=new DistributionClass();
 		DistributionClass generator=new DistributionClass();
-		TimeManager1 time=new TimeManager1();
-		MyQueue1 myQueue=new MyQueue1();
+		TimeManagerPJ time=new TimeManagerPJ();
+		MyQueuePJ myQueue=new MyQueuePJ();
 		int tuple=0,tupleValue=0;int n=0;
 //		int count=0;
 		int e=0;
@@ -143,7 +143,7 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 }
 
 
-class TimeManager1{
+class TimeManagerPJ{
 	public final static int STEP=15;
 	public double now(){
 		return(System.nanoTime());
@@ -157,7 +157,7 @@ class TimeManager1{
 	}
 }
 
-class MyQueue1 extends PriorityQueue<PartitionjoinStartUpdatesStream>{
+class MyQueuePJ extends PriorityQueue<PartitionjoinStartUpdatesStream>{
 	private static final long serialVersionUID = 1L;
 	public long totalCurrentBandwidth=0;
 }
