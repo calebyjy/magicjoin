@@ -15,20 +15,20 @@ import joins.HybridJoin;
  * Our benchmark implements the Zipfian distribution which is one kind of Power's Law.
   */
 
-public class HybridjoinStartUpdatesStream extends Thread implements Comparable<Object>{
-	public static TimeManagerHJ time;
+public class CachejoinStartUpdatesStream extends Thread implements Comparable<Object>{
+	public static TimeManagerCJ time;
 	public boolean on=false;
 	public double timeInChosenUnit;
 	public DistributionClass distribution;
-	public MyQueueHJ ownQueue;
+	public MyQueueCJ ownQueue;
 	public double bandwidth;
 	Random myRandom=new Random();
 	
-	public HybridjoinStartUpdatesStream(){
+	public CachejoinStartUpdatesStream(){
 		
 	}
 	public int compareTo(Object o) {
-		HybridjoinStartUpdatesStream y = (HybridjoinStartUpdatesStream) o;
+		CachejoinStartUpdatesStream y = (CachejoinStartUpdatesStream) o;
 		   double diff = this.timeInChosenUnit - y.timeInChosenUnit;
 		   if(diff < 0.0) return -1;
 		   if(diff > 0.0) return 1;
@@ -42,7 +42,7 @@ public class HybridjoinStartUpdatesStream extends Thread implements Comparable<O
 	     }
 	}
 	
-	HybridjoinStartUpdatesStream(MyQueueHJ ownQueue, DistributionClass distribution, double bandwidth){
+	CachejoinStartUpdatesStream(MyQueueCJ ownQueue, DistributionClass distribution, double bandwidth){
 		this.distribution=distribution;
 		this.ownQueue=ownQueue;
 		this.bandwidth=bandwidth;
@@ -52,7 +52,7 @@ public class HybridjoinStartUpdatesStream extends Thread implements Comparable<O
 	
 	public void swapStatus(){
 		
-		timeInChosenUnit+=distribution.getNextDistributionValue()*TimeManagerHJ.STEP*bandwidth;
+		timeInChosenUnit+=distribution.getNextDistributionValue()*TimeManagerCJ.STEP*bandwidth;
 		
 		if(on){
 			ownQueue.totalCurrentBandwidth-=bandwidth;
@@ -69,20 +69,20 @@ public class HybridjoinStartUpdatesStream extends Thread implements Comparable<O
 		
 		DistributionClass distribution=new DistributionClass();
 		DistributionClass generator=new DistributionClass();
-		TimeManagerHJ time=new TimeManagerHJ();
-		MyQueueHJ myQueue=new MyQueueHJ();
+		TimeManagerCJ time=new TimeManagerCJ();
+		MyQueueCJ myQueue=new MyQueueCJ();
 		int tuple=0,tupleValue=0;
 		int count=0;
 		long CS_per_Iteration=0,start=0,stop=0;
 		for(int i=0; i<6; i++){
-			new HybridjoinStartUpdatesStream(myQueue,distribution,Math.pow(2,i));
+			new CachejoinStartUpdatesStream(myQueue,distribution,Math.pow(2,i));
 		}
-		HybridjoinStartUpdatesStream current=(HybridjoinStartUpdatesStream)myQueue.poll();
+		CachejoinStartUpdatesStream current=(CachejoinStartUpdatesStream)myQueue.poll();
 		while(true){
 			tuple=0;
 			time.waitOneStep();
 			while(time.now()>current.timeInChosenUnit){
-				current=(HybridjoinStartUpdatesStream)myQueue.poll();
+				current=(CachejoinStartUpdatesStream)myQueue.poll();
 				current.swapStatus();
 			}
 			while(tuple<myQueue.totalCurrentBandwidth){
@@ -99,14 +99,14 @@ public class HybridjoinStartUpdatesStream extends Thread implements Comparable<O
 						count=0;
 					}
 					tuple++;
-				}
+					}
 			}
 		}
 	}
 }
 
 
-class TimeManagerHJ{
+class TimeManagerCJ{
 	public final static int STEP=15;
 	public double now(){
 		return(System.nanoTime());
@@ -120,7 +120,7 @@ class TimeManagerHJ{
 	}
 }
 
-class MyQueueHJ extends PriorityQueue<HybridjoinStartUpdatesStream>{
+class MyQueueCJ extends PriorityQueue<CachejoinStartUpdatesStream>{
 	private static final long serialVersionUID = 1L;
 	public long totalCurrentBandwidth=0;
 }
