@@ -345,7 +345,7 @@ public class MeshJoin {
 		System.out.println("Memory used by Stream buffer:  "+bufferW+" MB");
 		System.out.println("Memory used by buffer b :  "+bufferb+"  MB");
 		System.out.println("Total Memory: "+total+" MB");
-		BufferedWriter bw=new BufferedWriter(new FileWriter("F://Performance comp using realistic benchmark//MESHJOIN//M varies//Cloop_Cost_Lamda=2000_R=2m_M=250MB.txt"));
+		BufferedWriter bw=new BufferedWriter(new FileWriter("D://Grant//MESHJOIN//MSc//thesis//result//MeshJoin_Cloop_Cost_Lamda=2000_R=2m_M=250MB.txt"));
 /*
 		bw.write("Waiting time for each tuple from arrival to process");
 		bw.newLine();

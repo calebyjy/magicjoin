@@ -1,4 +1,4 @@
-package stream;
+package db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -45,9 +45,15 @@ public class GenerateRandomMasterData {
 			while(count<8000000){
 				ir=(ir+increment)%prime;
 				if(duplicateTest[ir]==0){
-					stmt.executeUpdate("INSERT INTO product_unsorted_8million VALUES("+count+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+","+ir+");");
-					duplicateTest[ir]=ir;
-					count++;
+				stmt.executeUpdate("INSERT INTO product_unsorted_8million VALUES("+count+","+
+					ir+","+ir+","+ir+","+ir+","+ir+","+
+					ir+","+ir+","+ir+","+ir+","+ir+","+
+					ir+","+ir+","+ir+","+ir+","+ir+","+
+					ir+","+ir+","+ir+","+ir+","+ir+","+
+					ir+","+ir+","+ir+","+ir+","+ir+","+
+					ir+","+ir+","+ir+","+ir+");");
+				duplicateTest[ir]=ir;
+				count++;
 				}
 				System.out.println("Count: "+count+"\tvalue: "+ir);		
 			}
