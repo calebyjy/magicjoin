@@ -88,8 +88,8 @@ public class CACHEJOIN {
 		try{
 
 			String userName = "root";
-			String password = "root";
-			String url = "jdbc:mysql://localhost/masterdata";
+			String password = "sunshine";
+			String url = "jdbc:mysql://localhost/testdata";
 			Class.forName ("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection (url, userName, password);
 			System.out.println("Connected to Database");
@@ -256,7 +256,9 @@ public class CACHEJOIN {
 		//Loading of disk buffer
 		try{
 			start=System.nanoTime();
-			rs=stmt.executeQuery("Select attr1 FROM product_unsorted_2million USE INDEX(Index_on_join_attribute) WHERE attr2="+index+"");
+			//rs=stmt.executeQuery("Select attr1 FROM r_2_million USE INDEX(non_clustered) WHERE attr2="+index+"");
+			rs=stmt.executeQuery("Select attr1 FROM r_2_million WHERE attr2="+index+"");
+
 			if(!rs.next()){
 				list=(ArrayList<HybridJoinObject>)mhm.get(index);
 				mhm.remove(index);
@@ -270,7 +272,7 @@ public class CACHEJOIN {
 					}
 					if(deleteNodeAddress==currentNode){
 						currentNode=deleteNodeAddress.getPrecede();
-						lastNode=true;
+						lastNode=true;  
 					}
 					deleteNodeAddress.deleteNode(firstNode,lastNode);
 				}
@@ -278,7 +280,7 @@ public class CACHEJOIN {
 			}
 			else{
 				PageStart=rs.getInt(1);
-				rs=stmt.executeQuery("SELECT * from product_unsorted_2million where attr1>="+PageStart+" AND attr1<"+(PageStart+SWAP_DB)+"");
+				rs=stmt.executeQuery("SELECT * from r_2_million where attr1>="+PageStart+" AND attr1<"+(PageStart+SWAP_DB)+"");
 				stop=System.nanoTime();
 				if(measurementStart){
 					CIO[CIO_index++]=stop-start;
@@ -385,7 +387,7 @@ public class CACHEJOIN {
 		System.out.println("Queue status:"+hj.head.countNodes());
 		System.out.println("Non Volatile: "+hj.non_vola);
 		System.out.println("Volatile: "+hj.vola);
-		BufferedWriter bw=new BufferedWriter(new FileWriter("Z://Generalized_XHybridJoin//Cloop_Generalized_XHybridJoin//exponent_zero//Processing_Cost_swpdb_850_nswpdb_2500_M_50MB_R_2M_Expo_0.txt"));
+		BufferedWriter bw=new BufferedWriter(new FileWriter("d://grant//workspace//result//Processing_Cost_swpdb_850_nswpdb_2500_M_50MB_R_2M_Expo_0.txt"));
 
 		bw.write("Geralized X-HYBRIDJOIN PROCESSING COST WHEN SWPDB=850 TUPLES, N-SWPDB=2500 TUPLES STORED IN HASH, M=50MB, R=8 Millions and EXPONENT=-0.1");
 		bw.newLine();

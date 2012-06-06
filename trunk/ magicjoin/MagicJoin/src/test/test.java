@@ -107,8 +107,7 @@ public class test extends ApplicationFrame {
         final String category5 = "120-240sec";
         final String category6 = "240-480sec";
         final String category7 = "480-960sec";
-        final String category8 = ">960sec";
-        
+        final String category8 = ">960sec";    
         int count1=0;
         int count2=0;
         int count3=0;
