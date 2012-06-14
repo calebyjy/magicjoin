@@ -188,13 +188,13 @@ public class CACHEJOIN {
 						CH_per_Iteration+=stop-start;
 					}
 					start=System.nanoTime();
-					mhm.remove(diskBuffervolatile[row][1]);
+					mhm.remove(diskBuffervolatile[row][1]); 
 					stop=System.nanoTime();
 					if(measurementStart){
 						CEH_per_Iteration+=stop-start;
 					}
 					for(int listItem=0; listItem<list.size(); listItem++){
-						System.out.println(listItem);
+						System.out.println("Done by diskprobe: "+list.get(listItem).attr1);
 						firstNode=false;
 						lastNode=false;
 						deleteNodeAddress=list.get(listItem).nodeAddress1;
@@ -224,7 +224,6 @@ public class CACHEJOIN {
 					processedTuplesCount++;
 				}	
 			}
-			System.out.println("here");
 			start=System.nanoTime();
 			for(int row=0; row<SWAP_DB; row++){
 				if(frequencyDetector[row]>=THRESHOLD&& DiskHashTableManipulation.dmhm.size()<DiskHashTableManipulation.NON_SWAP_DB){
@@ -239,12 +238,13 @@ public class CACHEJOIN {
 					detectedTupleCount++;
 					//If you want to see which tuples is switched in H_R, just uncomment the following statement.
 					//System.out.println(diskBuffervolatile[row][1]+  "is switch to disk hash");
+					System.out.println("Cache loaded: "+ diskBuffervolatile[row][1]);
 				}
 				frequencyDetector[row]=0;				
 				
 			}
 			
-			System.out.println("Cache updated " );
+			System.out.println("Cache updated & required tuple= " + requiredTuplesCount );
 			
 			stop=System.nanoTime();
 
@@ -285,6 +285,7 @@ public class CACHEJOIN {
 					}
 					deleteNodeAddress.deleteNode(firstNode,lastNode);
 				}
+				System.out.println("required attribute doesn't exist.");
 				tupleInMD=false;
 			}
 			else{
@@ -308,12 +309,15 @@ public class CACHEJOIN {
 	public void appendHash(){
 		long start=0,stop=0,CA_per_Iteration=0;
 		int eachInputSize=0;
-		while(streamBuffer.size()<requiredTuplesCount);
+		while(streamBuffer.size()<requiredTuplesCount){System.out.println("LOOPING");};
 		tuplesMatchedIntoDiskHash=0;
+		System.out.println("appendHash running");
+
 		while (requiredTuplesCount>0){
 			if(dhtm.matchedIntoDiskHash(streamBuffer.peek().attr1)){
 				streamBuffer.poll();
-				tuplesMatchedIntoDiskHash++;				
+				tuplesMatchedIntoDiskHash++;	
+				System.out.println("Done by Cache: "+ streamBuffer.peek().attr1);
 			}
 			else{
 				start=System.nanoTime();

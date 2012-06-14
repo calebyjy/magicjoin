@@ -27,7 +27,7 @@ public class HybridJoin {
 	public static final int HASH_SIZE=317597;
 	public static final int QUEUE_SIZE=HASH_SIZE;
 	public static final int STREAM_SIZE=50000;
-	public static final int DISK_RELATION_SIZE=2000000;
+	public static final int DISK_RELATION_SIZE=10000000;
 	public static final int PAGE_SIZE=500;
 	public static final int MIN_KEY=1;
 	public static final int MAX_KEY=DISK_RELATION_SIZE;
@@ -212,7 +212,7 @@ public class HybridJoin {
 		//Read into disk buffer
 		try{
 			start=System.nanoTime();
-			rs=stmt.executeQuery("SELECT * from r_2_million where attr1>="+index+" AND attr1<"+(index+PAGE_SIZE)+"");
+			rs=stmt.executeQuery("SELECT * from r_10_million where attr1>="+index+" AND attr1<"+(index+PAGE_SIZE)+"");
 			stop=System.nanoTime();
 			if(measurementStart){
 				CIO[CIO_index++]=stop-start;
@@ -232,7 +232,7 @@ public class HybridJoin {
 		//Append into Q and H from stream buffer
 		//Stream buffer waiting time
 		while(streamBuffer.size()<requiredTuplesCount);
-		
+		System.out.println("requiredTuplesCount =" + requiredTuplesCount);
 		while (requiredTuplesCount>0){
 			/*		
 			
@@ -313,7 +313,7 @@ public static void main(String args[])throws java.io.IOException, InterruptedExc
 	System.out.println("Room for more tuples:"+hj.requiredTuplesCount);
 	System.out.println("Queue status:"+hj.head.countNodes());
 	
-	BufferedWriter bw=new BufferedWriter(new FileWriter("d://workspace//result//Cloop_cost_lamda_2000_M=50MB_R=2M_exp=-1_DB_500_.txt"));
+	BufferedWriter bw=new BufferedWriter(new FileWriter("d://workspace//result//Cloop_cost_lamda_2000_M=50MB_R=10M_exp=-1_DB_500_.txt"));
 /*
 	bw.write("Time to stay each tuple in Hybrid Join Window");
 	bw.newLine();
