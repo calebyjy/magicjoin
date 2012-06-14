@@ -1,4 +1,4 @@
-package extendedHybridJoin;
+package joins;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -9,9 +9,13 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.DriverManager;
+
+import objects.HybridJoinObject;
+
 import org.apache.commons.collections15.MultiMap;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import sizeof.agent.SizeOfAgent;
+import stream.HybridjoinStartUpdatesStream;
 
 /**
  * This program implements the algorithm for X-HYBRIDJOIN. In addition this also
@@ -26,7 +30,7 @@ public class XHybridJoin {
 	public static final int QUEUE_SIZE=HASH_SIZE;
 	public static final int STREAM_SIZE=5000;
 	public static final int DISK_RELATION_SIZE=2000000;
-	public static final int  =1500;
+	public static final int NON_SWAP_DB =1500;
 	public static final int SWAP_DB=950;
 	public static final int MIN_KEY=1;
 	public static final int MAX_KEY=DISK_RELATION_SIZE;
@@ -38,13 +42,13 @@ public class XHybridJoin {
 	static MultiMap<Integer,HybridJoinObject> mhm=new MultiHashMap<Integer,HybridJoinObject>();
 	static ArrayList <HybridJoinObject> list=new ArrayList<HybridJoinObject>();
 	static LinkedBlockingQueue<HybridJoinObject> streamBuffer=new LinkedBlockingQueue<HybridJoinObject>();
-	static int diskBuffernonvolatile[][]=new int[NON__SWAP_DB][30];
+	static int diskBuffernonvolatile[][]=new int[NON_SWAP_DB][30];
 	static int diskBuffervolatile[][]=new int[SWAP_DB][30];
 	
 	Random myRandom=new Random();
 	Statement stmt=null;
 	ResultSet rs=null;
-	Queue head,currentNode;
+	DoubleLinkQueue head,currentNode;
 	int streamRandomValue;
 	int requiredTuplesCount=0,non_vola=0,vola=0;
 	static long CE[]= new long[DISK_RELATION_SIZE/100];
@@ -135,9 +139,9 @@ public class XHybridJoin {
 		random=myRandom.nextDouble();
 		rawFK = inverseIntegral(random*sumOfFrequency+minimumLimit);
 		streamRandomValue=(int)rawFK;
-		head=new Queue(streamRandomValue);
+		head=new DoubleLinkQueue(streamRandomValue);
 		currentNode=head;
-		mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode));
+		mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode,System.nanoTime()));
 		oneNodeSize=SizeOfAgent.fullSizeOf(head);
 		while(tuples<HASH_SIZE){
 			random=myRandom.nextDouble();
@@ -145,7 +149,7 @@ public class XHybridJoin {
 			streamRandomValue=(int)rawFK;
 			if(streamRandomValue>=1&& streamRandomValue<DISK_RELATION_SIZE){
 				currentNode=currentNode.addNode(streamRandomValue);
-				mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode));
+				mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode,System.nanoTime()));
 				tuples++;
 				if(tuples==49){
 					memoryForFiftyTuples=SizeOfAgent.fullSizeOf(mhm);
@@ -175,7 +179,7 @@ public class XHybridJoin {
 		int hashProbCount=0;
 		non_vola=0; //to count the matching tuples for non-swappable part separately
 		//Probing of non-swappable part of the disk buffer
-		for(int row=0; row<NON__SWAP_DB; row++){
+		for(int row=0; row<NON_SWAP_DB; row++){
 			if(mhm.containsKey(diskBuffernonvolatile[row][0])){
 				start=System.nanoTime();
 				list=(ArrayList<HybridJoinObject>)mhm.get(diskBuffernonvolatile[row][0]);
@@ -193,7 +197,7 @@ public class XHybridJoin {
 				for(int listItem=0; listItem<list.size(); listItem++){
 					firstNode=false;
 					lastNode=false;
-					Queue deleteNodeAddress=list.get(listItem).nodeAddress;
+					DoubleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress1;
 					if(deleteNodeAddress==head){
 						head=deleteNodeAddress.getNext();
 						firstNode=true;
@@ -246,7 +250,7 @@ public class XHybridJoin {
 				for(int listItem=0; listItem<list.size(); listItem++){
 					firstNode=false;
 					lastNode=false;
-					Queue deleteNodeAddress=list.get(listItem).nodeAddress;
+					DoubleLinkQueue deleteNodeAddress=list.get(listItem).nodeAddress1;
 					if(deleteNodeAddress==head){
 						head=deleteNodeAddress.getNext();
 						firstNode=true;
@@ -292,7 +296,7 @@ public class XHybridJoin {
 		int row=0;
 			
 		try{
-			rs=stmt.executeQuery("SELECT * from lookup_table_twomillion where attr1>="+1+" AND attr1<"+NON__SWAP_DB+";");
+			rs=stmt.executeQuery("SELECT * from lookup_table_twomillion where attr1>="+1+" AND attr1<"+NON_SWAP_DB+";");
 			while(rs.next()){
 				for(int col=1; col<=30; col++){
 					diskBuffernonvolatile[row][col-1]=rs.getInt(col);
@@ -344,7 +348,7 @@ public class XHybridJoin {
 		while (requiredTuplesCount>0){
 			start=System.nanoTime();
 			currentNode=currentNode.addNode(streamBuffer.peek().attr1);
-			mhm.put(new Integer(streamBuffer.peek().attr1),new HybridJoinObject(streamBuffer.peek().attr1,streamBuffer.peek().attr2,streamBuffer.peek().attr3,streamBuffer.peek().attr4,streamBuffer.peek().attr5,currentNode));
+			mhm.put(new Integer(streamBuffer.peek().attr1),new HybridJoinObject(streamBuffer.peek().attr1,streamBuffer.peek().attr2,streamBuffer.peek().attr3,streamBuffer.peek().attr4,streamBuffer.peek().attr5,currentNode,System.nanoTime()));
 			streamBuffer.poll();
 			stop=System.nanoTime();
 			if(measurementStart){
@@ -375,7 +379,7 @@ public class XHybridJoin {
 
 public static void main(String args[])throws java.io.IOException, InterruptedException{
 	XHybridJoin hj=new XHybridJoin();
-	StartUpdatesStream stream=new StartUpdatesStream();
+	HybridjoinStartUpdatesStream stream=new HybridjoinStartUpdatesStream();
 	System.out.println("Hybrid Join in execution mode...");
 	hj.fillHashTable();
 	Connection conn=hj.connectDB();
@@ -418,7 +422,7 @@ public static void main(String args[])throws java.io.IOException, InterruptedExc
 	System.out.println("Queue status:"+hj.head.countNodes());
 	System.out.println("Non Volatile: "+hj.non_vola);
 	System.out.println("Volatile: "+hj.vola);
-	BufferedWriter bw=new BufferedWriter(new FileWriter("F://Tuned-X-HYBRIDJOIN//Tuning_of_swaapble_part_M_varies//Memory_100MB//Cost_for_nswpdb_1500_swpdb_950_M_100MB_R_2Million_Expo_-1.txt"));
+	BufferedWriter bw=new BufferedWriter(new FileWriter("D://workspace//result//XHybridJoin_Cost_for_nswpdb_1500_swpdb_950_M_100MB_R_2Million_Expo_-1.txt"));
 
 	bw.write("Detail of processing cost when N-SWPDB=1500 tuples SWPDB=950 tuples, R=2Million, M=100MB and Exponent=-1 and Reading start after 10 iterations");
 	bw.newLine();

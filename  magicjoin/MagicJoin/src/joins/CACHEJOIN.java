@@ -172,7 +172,9 @@ public class CACHEJOIN {
 		boolean firstNode=false,lastNode=false,tupleInMD=true;
 		int processedTuplesCount=0,hashProbCount=0,detectedTupleCount=0;
 		int index=head.popNode();
+		System.out.println("processing tuple: "+ index);
 		tupleInMD=readDBvolatilePage(index);
+		System.out.println("tuple exist: "+ tupleInMD);
 
 		if(tupleInMD){
 			//Probing of disk buffer
@@ -192,6 +194,7 @@ public class CACHEJOIN {
 						CEH_per_Iteration+=stop-start;
 					}
 					for(int listItem=0; listItem<list.size(); listItem++){
+						System.out.println(listItem);
 						firstNode=false;
 						lastNode=false;
 						deleteNodeAddress=list.get(listItem).nodeAddress1;
@@ -221,6 +224,7 @@ public class CACHEJOIN {
 					processedTuplesCount++;
 				}	
 			}
+			System.out.println("here");
 			start=System.nanoTime();
 			for(int row=0; row<SWAP_DB; row++){
 				if(frequencyDetector[row]>=THRESHOLD&& DiskHashTableManipulation.dmhm.size()<DiskHashTableManipulation.NON_SWAP_DB){
@@ -236,8 +240,12 @@ public class CACHEJOIN {
 					//If you want to see which tuples is switched in H_R, just uncomment the following statement.
 					//System.out.println(diskBuffervolatile[row][1]+  "is switch to disk hash");
 				}
-				frequencyDetector[row]=0;
+				frequencyDetector[row]=0;				
+				
 			}
+			
+			System.out.println("Cache updated " );
+			
 			stop=System.nanoTime();
 
 			if(measurementStart){
@@ -257,11 +265,12 @@ public class CACHEJOIN {
 		try{
 			start=System.nanoTime();
 			//rs=stmt.executeQuery("Select attr1 FROM r_2_million USE INDEX(non_clustered) WHERE attr2="+index+"");
-			rs=stmt.executeQuery("Select attr1 FROM r_2_million WHERE attr2="+index+"");
+			rs=stmt.executeQuery("Select attr1 FROM r_2_million WHERE attr1="+index+"");
 
 			if(!rs.next()){
 				list=(ArrayList<HybridJoinObject>)mhm.get(index);
 				mhm.remove(index);
+				int count=0;
 				for(int listItem=0; listItem<list.size(); listItem++){
 					firstNode=false;
 					lastNode=false;
@@ -287,7 +296,7 @@ public class CACHEJOIN {
 				}
 				while(rs.next()){
 					for(int col=1; col<=30; col++){
-						diskBuffervolatile[row][col-1]=rs.getInt(col);
+						diskBuffervolatile[row][col-1]=rs.getInt(col);						
 					}
 					row++;
 				}
@@ -299,12 +308,12 @@ public class CACHEJOIN {
 	public void appendHash(){
 		long start=0,stop=0,CA_per_Iteration=0;
 		int eachInputSize=0;
-		while(streamBuffer.size()<requiredTuplesCount*3);
+		while(streamBuffer.size()<requiredTuplesCount);
 		tuplesMatchedIntoDiskHash=0;
 		while (requiredTuplesCount>0){
 			if(dhtm.matchedIntoDiskHash(streamBuffer.peek().attr1)){
 				streamBuffer.poll();
-				tuplesMatchedIntoDiskHash++;
+				tuplesMatchedIntoDiskHash++;				
 			}
 			else{
 				start=System.nanoTime();
@@ -319,6 +328,8 @@ public class CACHEJOIN {
 				eachInputSize++;
 			}
 		}
+		System.out.println("done by cache!!!");
+		System.out.print("Stream After: " + streamBuffer.size());
 		/*If you want to see which tuples matched in H_R and the total input size for next iteration
 			 just uncomment the following statements.
 		 */	
