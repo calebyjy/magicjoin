@@ -1,4 +1,4 @@
-package cacheJoinSource;
+package joins;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -15,6 +15,7 @@ import objects.HybridJoinObject;
 import org.apache.commons.collections15.MultiMap;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 import sizeof.agent.SizeOfAgent;
+import stream.HybridjoinStartUpdatesStream;
 /**
  * This program implements the algorithm for HYBRIDJOIN on random Master Data. The program also
  * calculates the processing cost for each loop iteration that is used to calculate the
@@ -51,7 +52,7 @@ public class HybridJoinWithRandomDM {
 	Random myRandom=new Random();
 	Statement stmt=null;
 	ResultSet rs=null;
-	Queue head,currentNode,deleteNodeAddress;
+	DoubleLinkQueue head,currentNode,deleteNodeAddress;
 	int streamRandomValue;
 	int requiredTuplesCount=0;
 	static long CE[]= new long[DISK_RELATION_SIZE/PAGE_SIZE];
@@ -143,9 +144,9 @@ public class HybridJoinWithRandomDM {
 		random=myRandom.nextDouble();
 		rawFK = inverseIntegral(random*sumOfFrequency+minimumLimit);
 		streamRandomValue=(int)rawFK;
-		head=new Queue(streamRandomValue);
+		head=new DoubleLinkQueue(streamRandomValue);
 		currentNode=head;
-		mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode));
+		mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode,System.nanoTime()));
 		oneNodeSize=SizeOfAgent.fullSizeOf(head);
 		while(tuples<HASH_SIZE){
 			random=myRandom.nextDouble();
@@ -153,7 +154,7 @@ public class HybridJoinWithRandomDM {
 			streamRandomValue=(int)rawFK;
 			if(streamRandomValue>=1&& streamRandomValue<DISK_RELATION_SIZE){
 				currentNode=currentNode.addNode(streamRandomValue);
-				mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode));
+				mhm.put(new Integer(streamRandomValue),new HybridJoinObject(streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,streamRandomValue,currentNode,System.nanoTime()));
 				tuples++;
 				if(tuples==49){
 					memoryForFiftyTuples=SizeOfAgent.fullSizeOf(mhm);
@@ -198,7 +199,7 @@ public class HybridJoinWithRandomDM {
 						firstNode=false;
 						lastNode=false;
 						//Remove expire tuples from Q and H
-						deleteNodeAddress=list.get(listItem).nodeAddress;
+						deleteNodeAddress=list.get(listItem).nodeAddress1;
 						if(deleteNodeAddress==head){
 							head=deleteNodeAddress.getNext();
 							firstNode=true;
@@ -253,7 +254,7 @@ public class HybridJoinWithRandomDM {
 				for(int listItem=0; listItem<list.size(); listItem++){
 					firstNode=false;
 					lastNode=false;
-					deleteNodeAddress=list.get(listItem).nodeAddress;
+					deleteNodeAddress=list.get(listItem).nodeAddress1;
 					if(deleteNodeAddress==head){
 						head=deleteNodeAddress.getNext();
 						firstNode=true;
@@ -304,7 +305,7 @@ public class HybridJoinWithRandomDM {
 		while (requiredTuplesCount>0){
 			start=System.nanoTime();
 			currentNode=currentNode.addNode(streamBuffer.peek().attr1);
-			mhm.put(new Integer(streamBuffer.peek().attr1),new HybridJoinObject(streamBuffer.peek().attr1,streamBuffer.peek().attr2,streamBuffer.peek().attr3,streamBuffer.peek().attr4,streamBuffer.peek().attr5,currentNode));
+			mhm.put(new Integer(streamBuffer.peek().attr1),new HybridJoinObject(streamBuffer.peek().attr1,streamBuffer.peek().attr2,streamBuffer.peek().attr3,streamBuffer.peek().attr4,streamBuffer.peek().attr5,currentNode,System.nanoTime()));
 			streamBuffer.poll();
 			stop=System.nanoTime();
 			if(measurementStart){

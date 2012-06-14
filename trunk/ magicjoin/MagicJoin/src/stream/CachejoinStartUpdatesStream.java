@@ -89,7 +89,7 @@ public class CachejoinStartUpdatesStream extends Thread implements Comparable<Ob
 				tupleValue=generator.getNextDistributionValue();
 				if(tupleValue>=1&& tupleValue<HybridJoin.DISK_RELATION_SIZE){
 					start=System.nanoTime();
-					HybridJoin.streamBuffer.put(new MeshJoinObject(tupleValue,tupleValue,tupleValue,tupleValue,tupleValue,System.currentTimeMillis()));
+					HybridJoin.streamBuffer.put(new MeshJoinObject(tupleValue,tupleValue,tupleValue,tupleValue,tupleValue,System.nanoTime()));
 					stop=System.nanoTime();
 					CS_per_Iteration+=stop-start;
 					count++;
@@ -99,7 +99,7 @@ public class CachejoinStartUpdatesStream extends Thread implements Comparable<Ob
 						count=0;
 					}
 					tuple++;
-					}
+				}
 			}
 		}
 	}

@@ -212,7 +212,7 @@ public class HybridJoin {
 		//Read into disk buffer
 		try{
 			start=System.nanoTime();
-			rs=stmt.executeQuery("SELECT * from rpjoin where attr1>="+index+" AND attr1<"+(index+PAGE_SIZE)+"");
+			rs=stmt.executeQuery("SELECT * from r_2_million where attr1>="+index+" AND attr1<"+(index+PAGE_SIZE)+"");
 			stop=System.nanoTime();
 			if(measurementStart){
 				CIO[CIO_index++]=stop-start;
@@ -249,10 +249,10 @@ public class HybridJoin {
 				CA_per_Iteration+=stop-start;
 			}
 		
-		requiredTuplesCount--;
-		eachInputSize++;
-	}
-	System.out.println("Stream After:  "+streamBuffer.size());	
+			requiredTuplesCount--;
+			eachInputSize++;
+		}
+		System.out.println("Stream After:  "+streamBuffer.size());	
 		if(measurementStart){
 		
 			CA[CA_index++]=CA_per_Iteration/eachInputSize;

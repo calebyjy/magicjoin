@@ -175,7 +175,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 			}
 		}
 		
-		long starttime=System.currentTimeMillis();
+		long starttime=System.nanoTime();
 		
 		for(int round=0;round<2;round++){
 			
@@ -207,7 +207,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 				}
 			}
 		}
-		long currenttime=System.currentTimeMillis();
+		long currenttime=System.nanoTime();
 		
 		for (int i = 0; i < P_NUMBER; i++) {
 			if (wBuffer.get(i).size() > 0) {
@@ -278,7 +278,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 			return;
 		}
 		try{
-			rs=stmt_select.executeQuery("SELECT * from rpjoin1 where attr1>="+startRead+" AND attr1<"+(startRead+DISK_BUFFER)+"");
+			rs=stmt_select.executeQuery("SELECT * from r_2_million where attr1>="+startRead+" AND attr1<"+(startRead+DISK_BUFFER)+"");
 			int n=0;	
 			while(rs.next()){									
 				for(int col=1; col<=30; col++){
@@ -324,14 +324,14 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 					
 					//record completed join operations in DB
 					mode="initial mode";
-					waittime=(int)(System.currentTimeMillis()-po.arrivalTime);
+					waittime=(int)(System.nanoTime()-po.arrivalTime);
 					
 					try{
-						stmt_insert.executeUpdate("INSERT INTO completed ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
+						stmt_insert.executeUpdate("INSERT INTO complete_rpjoin_r2million_d500_p500_w2000_j500 ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
 					}catch(SQLException e){System.out.print(e);}
 					
 					/*processed++;
-					waittime[index]=System.currentTimeMillis()-po.arrivalTime;
+					waittime[index]=System.nanoTime()-po.arrivalTime;
 					mode[index++]="IM";
 					if(index>=99){				
 						try {
@@ -365,7 +365,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 		}
 		
 		try{
-			rs=stmt_select.executeQuery("SELECT * from rpjoin1 where attr1>="+startRead+" AND attr1<"+(startRead+DISK_BUFFER)+"");
+			rs=stmt_select.executeQuery("SELECT * from r_2_million where attr1>="+startRead+" AND attr1<"+(startRead+DISK_BUFFER)+"");
 			int n=0;	
 			while(rs.next()){									
 				for(int col=1; col<=30; col++){
@@ -376,14 +376,14 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 					System.out.println("INIT(firsttime): Join complete: "+ po.attr1 +" " +jMemory[l][n][0]);
 					
 					//record completed join operations in DB
-					waittime=(int)(System.currentTimeMillis()-po.arrivalTime);
+					waittime=(int)(System.nanoTime()-po.arrivalTime);
 					mode="initial mode";
 					try{
-						stmt_insert.executeUpdate("INSERT INTO completed ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
+						stmt_insert.executeUpdate("INSERT INTO complete_rpjoin_r2million_d500_p500_w2000_j500 ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
 					}catch(SQLException e){System.out.print(e);}
 					
 					/*processed++;
-					waittime[index]=System.currentTimeMillis()-po.arrivalTime;
+					waittime[index]=System.nanoTime()-po.arrivalTime;
 					mode[index++]="IM";
 					if(index>=99){				
 						try {
@@ -419,14 +419,14 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 				System.out.println("TM: Join complete: "+ po.attr1);
 				
 				//record completed join operations in DB
-				waittime=(int)(System.currentTimeMillis()-po.arrivalTime);
+				waittime=(int)(System.nanoTime()-po.arrivalTime);
 				mode="tuple mode";
 				try{
-					stmt_insert.executeUpdate("INSERT INTO completed ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
+					stmt_insert.executeUpdate("INSERT INTO complete_rpjoin_r2million_d500_p500_w2000_j500 ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
 				}catch(SQLException e){System.out.print(e);}
 				
 				/*processed++;
-				waittime[index]=System.currentTimeMillis()-po.arrivalTime;
+				waittime[index]=System.nanoTime()-po.arrivalTime;
 				mode[index++]="TM";
 				if(index>=99){				
 					try {
@@ -506,14 +506,14 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 						System.out.println("BM: Join complete on: "+ wBuffer.get(p).get(i).attr1);
 						
 						//record completed join operations in DB
-						waittime=(int)(System.currentTimeMillis()-po.arrivalTime);
+						waittime=(int)(System.nanoTime()-po.arrivalTime);
 						mode="block mode";
 						try{
-							stmt_insert.executeUpdate("INSERT INTO completed ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
+							stmt_insert.executeUpdate("INSERT INTO complete_rpjoin_r2million_d500_p500_w2000_j500 ( join_attribute, processing_time, processing_mode) VALUES("+ po.attr1 +","+ waittime +",'" +mode+"'" +")");
 						}catch(SQLException e){System.out.print(e);}
 						
 						/*processed++;
-						waittime[index]=System.currentTimeMillis()-wBuffer.get(p).get(i).arrivalTime;
+						waittime[index]=System.nanoTime()-wBuffer.get(p).get(i).arrivalTime;
 						mode[index++]="BM";
 						if(index>=99){				
 							try {
@@ -569,7 +569,7 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 		int startRead=p*PAGE_SIZE;
 
 		try{
-			rs=stmt_select.executeQuery("SELECT * from rpjoin1 where attr1>="+startRead+" AND attr1<"+(startRead+DISK_BUFFER));
+			rs=stmt_select.executeQuery("SELECT * from r_2_million where attr1>="+startRead+" AND attr1<"+(startRead+DISK_BUFFER));
 			int n=0;	
 			while(rs.next()){									
 				for(int col=1; col<=30; col++){
@@ -586,14 +586,14 @@ public class RangeBasedPartitionedJoin extends Thread implements Runnable{
 					System.out.println("DP: Join complete "+wBuffer.get(p).get(j).attr1 + " on: "+ dBuffer[i][0]);
 					
 					//record completed join operations in DB
-					waittime=(int)(System.currentTimeMillis()-wBuffer.get(p).get(j).arrivalTime);
+					waittime=(int)(System.nanoTime()-wBuffer.get(p).get(j).arrivalTime);
 					mode="disk probe";
 					try{
-						stmt_insert.executeUpdate("INSERT INTO completed ( join_attribute, processing_time, processing_mode) VALUES("+ wBuffer.get(p).get(j).attr1 +","+ waittime +",'" +mode+"'" +")");
+						stmt_insert.executeUpdate("INSERT INTO complete_rpjoin_r2million_d500_p500_w2000_j500 ( join_attribute, processing_time, processing_mode) VALUES("+ wBuffer.get(p).get(j).attr1 +","+ waittime +",'" +mode+"'" +")");
 					}catch(SQLException e){System.out.print(e);}
 					
 					/*processed++;
-					waittime[index]=System.currentTimeMillis()-wBuffer.get(p).get(j).arrivalTime;
+					waittime[index]=System.nanoTime()-wBuffer.get(p).get(j).arrivalTime;
 					mode[index++]="DP";
 					if(index>=99){				
 						try {

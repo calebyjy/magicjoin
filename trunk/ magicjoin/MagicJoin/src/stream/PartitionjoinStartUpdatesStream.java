@@ -97,9 +97,9 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 					current.swapStatus();
 				}
 				while (tuple < myQueue.totalCurrentBandwidth) {
-					tn=System.currentTimeMillis();
+					tn=System.nanoTime();
 
-					while (System.currentTimeMillis()-tn<1000){	
+					while (System.nanoTime()-tn<1000000000){	
 					    if(RangeBasedPartitionedJoin.inBuffer.size()>RangeBasedPartitionedJoin.INPUT_BUFFER-1){
 					    	sleep(1000);
 					    	break;
@@ -112,7 +112,7 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 							RangeBasedPartitionedJoin.inBuffer
 									.put(new PartitionedObject(tupleValue,
 											tupleValue, tupleValue, tupleValue,
-											tupleValue, System.currentTimeMillis()));
+											tupleValue, System.nanoTime()));
 							
 							System.out.println("put " + tupleValue+ " into inBuffer (" + n +")   " + 
 									RangeBasedPartitionedJoin.inBuffer.size());
