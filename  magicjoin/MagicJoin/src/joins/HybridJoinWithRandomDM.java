@@ -81,8 +81,8 @@ public class HybridJoinWithRandomDM {
 		try{
 
 			String userName = "root";
-			String password = "root";
-			String url = "jdbc:mysql://localhost/masterdata";
+			String password = "sunshine";
+			String url = "jdbc:mysql://localhost/testdata";
 			Class.forName ("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection (url, userName, password);
 			System.out.println("Connected to Database");
@@ -247,7 +247,7 @@ public class HybridJoinWithRandomDM {
 		try{
 			System.out.println("Index: "+index);
 			start=System.nanoTime();
-			rs=stmt.executeQuery("Select attr1 FROM product_unsorted_8million USE INDEX(Index_on_join_attribute) WHERE attr2="+index+"");
+			rs=stmt.executeQuery("Select attr1 FROM r_10_million WHERE attr2="+index+"");
 			if(!rs.next()){
 				list=(ArrayList<HybridJoinObject>)mhm.get(index);
 				mhm.remove(index);
@@ -269,7 +269,7 @@ public class HybridJoinWithRandomDM {
 			}
 			else{
 				PageStart=rs.getInt(1);
-				rs=stmt.executeQuery("SELECT * from product_unsorted_8million where attr1>="+PageStart+" AND attr1<"+(PageStart+PAGE_SIZE)+"");
+				rs=stmt.executeQuery("SELECT * from r_10_million where attr1>="+PageStart+" AND attr1<"+(PageStart+PAGE_SIZE)+"");
 				stop=System.nanoTime();
 				System.out.println("attr1 at index: "+PageStart);
 				if(measurementStart){
@@ -343,7 +343,7 @@ public class HybridJoinWithRandomDM {
 		System.out.println("Hybrid Join in execution mode...");
 		hj.fillHashTable();
 		Connection conn=hj.connectDB();
-		BufferedWriter bw=new BufferedWriter(new FileWriter("Z://Generalized_XHybridJoin//Cloop_HybridJoin_for_unsorted_MD//R_varies//HYBRIDJOIN_Cloop_cost_unsortedMD_lamda_2000_M_50MB_R_8_M_exp_-0.1_DB_500.txt"));
+		BufferedWriter bw=new BufferedWriter(new FileWriter("d://workspace//result//HYBRIDJOIN_Cloop_cost_unsortedMD_lamda_2000_M_50MB_R_10_M_exp_-0.1_DB_500.txt"));
 		bw.write("HYBRIDJOIN PROCESSING COST\n");
 		try{
 			hj.stmt=conn.createStatement();
