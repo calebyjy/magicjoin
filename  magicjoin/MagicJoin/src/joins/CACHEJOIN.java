@@ -38,7 +38,7 @@ public class CACHEJOIN {
 	public static final int HASH_SIZE=255017;
 	public static final int QUEUE_SIZE=HASH_SIZE;
 	public static final int STREAM_SIZE=5000;
-	public static final int DISK_RELATION_SIZE=2000000;
+	public static final int DISK_RELATION_SIZE=10000000;
 	public static final int SWAP_DB=850;
 	public static final int MIN_KEY=1;
 	public static final int MAX_KEY=DISK_RELATION_SIZE;
@@ -50,14 +50,16 @@ public class CACHEJOIN {
 
 	static MultiMap<Integer,HybridJoinObject> mhm=new MultiHashMap<Integer,HybridJoinObject>();
 	static ArrayList <HybridJoinObject> list=new ArrayList<HybridJoinObject>();
-	static LinkedBlockingQueue<HybridJoinObject> streamBuffer=new LinkedBlockingQueue<HybridJoinObject>();
+	public static LinkedBlockingQueue<HybridJoinObject> streamBuffer=new LinkedBlockingQueue<HybridJoinObject>();
 	static int diskBuffervolatile[][]=new int[SWAP_DB][30];
 	static int frequencyDetector[]=new int[SWAP_DB];
 
 	Random myRandom=new Random();
 	static Statement stmt=null;
 	static ResultSet rs=null;
-	DoubleLinkQueue head,currentNode,deleteNodeAddress;
+	DoubleLinkQueue head;
+	public static DoubleLinkQueue currentNode;
+	DoubleLinkQueue deleteNodeAddress;
 	static DiskHashTableManipulation dhtm=null;
 	int streamRandomValue;
 	int requiredTuplesCount=0,non_vola=0,vola=0;
@@ -265,7 +267,7 @@ public class CACHEJOIN {
 		try{
 			start=System.nanoTime();
 			//rs=stmt.executeQuery("Select attr1 FROM r_2_million USE INDEX(non_clustered) WHERE attr2="+index+"");
-			rs=stmt.executeQuery("Select attr1 FROM r_2_million WHERE attr1="+index+"");
+			rs=stmt.executeQuery("Select attr1 FROM r_10_million WHERE attr1="+index+"");
 
 			if(!rs.next()){
 				list=(ArrayList<HybridJoinObject>)mhm.get(index);
@@ -290,7 +292,7 @@ public class CACHEJOIN {
 			}
 			else{
 				PageStart=rs.getInt(1);
-				rs=stmt.executeQuery("SELECT * from r_2_million where attr1>="+PageStart+" AND attr1<"+(PageStart+SWAP_DB)+"");
+				rs=stmt.executeQuery("SELECT * from r_10_million where attr1>="+PageStart+" AND attr1<"+(PageStart+SWAP_DB)+"");
 				stop=System.nanoTime();
 				if(measurementStart){
 					CIO[CIO_index++]=stop-start;
@@ -309,15 +311,19 @@ public class CACHEJOIN {
 	public void appendHash(){
 		long start=0,stop=0,CA_per_Iteration=0;
 		int eachInputSize=0;
-		while(streamBuffer.size()<requiredTuplesCount){System.out.println("LOOPING");};
+		while(streamBuffer.size()<requiredTuplesCount){
+			System.out.println("stream buffer size: " +streamBuffer.size());
+			System.out.println("requiredTuplesCount:" + requiredTuplesCount);
+		};
 		tuplesMatchedIntoDiskHash=0;
 		System.out.println("appendHash running");
 
 		while (requiredTuplesCount>0){
+			if(streamBuffer.size()<1){continue;}
 			if(dhtm.matchedIntoDiskHash(streamBuffer.peek().attr1)){
 				streamBuffer.poll();
 				tuplesMatchedIntoDiskHash++;	
-				System.out.println("Done by Cache: "+ streamBuffer.peek().attr1);
+				//System.out.println("Done by Cache: "+ streamBuffer.peek().attr1);
 			}
 			else{
 				start=System.nanoTime();
@@ -329,6 +335,8 @@ public class CACHEJOIN {
 					CA_per_Iteration+=stop-start;
 				}
 				requiredTuplesCount--;
+				System.out.println("stream buffer size after join: " +streamBuffer.size());
+				System.out.println("requireTuples after filling: "+ requiredTuplesCount);
 				eachInputSize++;
 			}
 		}
@@ -402,7 +410,7 @@ public class CACHEJOIN {
 		System.out.println("Queue status:"+hj.head.countNodes());
 		System.out.println("Non Volatile: "+hj.non_vola);
 		System.out.println("Volatile: "+hj.vola);
-		BufferedWriter bw=new BufferedWriter(new FileWriter("d://grant//workspace//result//Processing_Cost_swpdb_850_nswpdb_2500_M_50MB_R_2M_Expo_0.txt"));
+		BufferedWriter bw=new BufferedWriter(new FileWriter("d://grant//workspace//result//Processing_Cost_swpdb_850_nswpdb_2500_M_50MB_R_10M_Expo_0.txt"));
 
 		bw.write("Geralized X-HYBRIDJOIN PROCESSING COST WHEN SWPDB=850 TUPLES, N-SWPDB=2500 TUPLES STORED IN HASH, M=50MB, R=8 Millions and EXPONENT=-0.1");
 		bw.newLine();

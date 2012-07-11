@@ -18,9 +18,8 @@ import objects.HybridJoinObject;
 import objects.MeshJoinObject;
 import stream.HybridjoinStartUpdatesStream;
 /**
- * This program measures the waiting time and processing time in HYBRIDJOIN. In addition this also
- * calculates the processing cost for each loop iteration that is used to calculate the
- * service rate. 
+ * This program measures the waiting time and processing time for the Semi-Stream Index Join. In addition this also
+ * calculates the processing cost for each loop iteration that can be used to calculate the service rate. 
  * @author gxia003
  *
  */
@@ -66,6 +65,7 @@ public class SSIJ {
 	 * TODO: add benchmark condition and end-of-stream singal
 	 */
 	public void pendingPhase(){
+		
 		onlinePhase();
 	}
 	
