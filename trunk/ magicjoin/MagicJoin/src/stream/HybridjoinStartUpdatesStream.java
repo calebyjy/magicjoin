@@ -3,8 +3,10 @@ package stream;
 import java.util.PriorityQueue;
 import java.util.Random;
 
+import objects.HybridJoinObject;
 import objects.MeshJoinObject;
 
+import joins.CACHEJOIN;
 import joins.HybridJoin;
 
 /***
@@ -87,9 +89,9 @@ public class HybridjoinStartUpdatesStream extends Thread implements Comparable<O
 			}
 			while(tuple<myQueue.totalCurrentBandwidth){
 				tupleValue=generator.getNextDistributionValue();
-				if(tupleValue>=1&& tupleValue<HybridJoin.DISK_RELATION_SIZE){
+				if(tupleValue>=1&& tupleValue<CACHEJOIN.DISK_RELATION_SIZE){
 					start=System.nanoTime();
-					HybridJoin.streamBuffer.put(new MeshJoinObject(tupleValue,tupleValue,tupleValue,tupleValue,tupleValue,System.currentTimeMillis()));
+					CACHEJOIN.streamBuffer.put(new HybridJoinObject(tupleValue,tupleValue,tupleValue,tupleValue,tupleValue,CACHEJOIN.currentNode,System.nanoTime()));
 					stop=System.nanoTime();
 					CS_per_Iteration+=stop-start;
 					count++;

@@ -122,14 +122,14 @@ public class test extends ApplicationFrame {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         
         try{
-			ResultSet rs1 = stmt1.executeQuery("SELECT count(*) from completed where processing_time>0 and processing_time<10000");
-			ResultSet rs2 = stmt2.executeQuery("SELECT count(*) from completed where processing_time>10000 and processing_time<30000");
-			ResultSet rs3 = stmt3.executeQuery("SELECT count(*) from completed where processing_time>30000 and processing_time<60000");
-			ResultSet rs4 = stmt4.executeQuery("SELECT count(*) from completed where processing_time>60000 and processing_time<120000");
-			ResultSet rs5 = stmt5.executeQuery("SELECT count(*) from completed where processing_time>120000 and processing_time<240000");
-			ResultSet rs6 = stmt6.executeQuery("SELECT count(*) from completed where processing_time>240000 and processing_time<480000");
-			ResultSet rs7 = stmt7.executeQuery("SELECT count(*) from completed where processing_time>480000 and processing_time<960000");
-			ResultSet rs8 = stmt8.executeQuery("SELECT count(*) from completed where processing_time>960000 ");
+			ResultSet rs1 = stmt1.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>0 and processing_time<10000");
+			ResultSet rs2 = stmt2.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>10000 and processing_time<30000");
+			ResultSet rs3 = stmt3.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>30000 and processing_time<60000");
+			ResultSet rs4 = stmt4.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>60000 and processing_time<120000");
+			ResultSet rs5 = stmt5.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>120000 and processing_time<240000");
+			ResultSet rs6 = stmt6.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>240000 and processing_time<480000");
+			ResultSet rs7 = stmt7.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>480000 and processing_time<960000");
+			ResultSet rs8 = stmt8.executeQuery("SELECT count(*) from complete_rpjoin_r2million_d500_p500_w2000_j500 where processing_time>960000 ");
 
 			rs1.next();
 			rs2.next();

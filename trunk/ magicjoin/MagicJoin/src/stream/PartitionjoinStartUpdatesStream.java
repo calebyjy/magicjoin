@@ -51,7 +51,7 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 		this.distribution=distribution;
 		this.ownQueue=ownQueue;
 		this.bandwidth=bandwidth;
-		timeInChosenUnit=System.nanoTime();
+		timeInChosenUnit=System.currentTimeMillis();
 		swapStatus();
 	}
 	
@@ -97,9 +97,9 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 					current.swapStatus();
 				}
 				while (tuple < myQueue.totalCurrentBandwidth) {
-					tn=System.nanoTime();
+					tn=System.currentTimeMillis();
 
-					while (System.nanoTime()-tn<1000000000){	
+					while (System.currentTimeMillis()-tn<1000000000){	
 					    if(RangeBasedPartitionedJoin.inBuffer.size()>RangeBasedPartitionedJoin.INPUT_BUFFER-1){
 					    	sleep(1000);
 					    	break;
@@ -108,17 +108,17 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 						int p=tupleValue%RangeBasedPartitionedJoin.P_NUMBER;
 						if (tupleValue >= 1
 								&& tupleValue < RangeBasedPartitionedJoin.R_SIZE) {
-	//						long start = System.nanoTime();
+	//						long start = System.currentTimeMillis();
 							RangeBasedPartitionedJoin.inBuffer
 									.put(new PartitionedObject(tupleValue,
 											tupleValue, tupleValue, tupleValue,
-											tupleValue, System.nanoTime()));
+											tupleValue, System.currentTimeMillis()));
 							
 							System.out.println("put " + tupleValue+ " into inBuffer (" + n +")   " + 
 									RangeBasedPartitionedJoin.inBuffer.size());
 							n++;
 							
-	/*						long stop = System.nanoTime();
+	/*						long stop = System.currentTimeMillis();
 							long CS_per_Iteration = stop - start;
 							count++;
 							if (count == RangeBasedPartitionedJoin.WAIT_BUFFER) {
@@ -146,7 +146,7 @@ public class PartitionjoinStartUpdatesStream extends Thread implements Comparabl
 class TimeManagerPJ{
 	public final static int STEP=15;
 	public double now(){
-		return(System.nanoTime());
+		return(System.currentTimeMillis());
 	}
 	public void waitOneStep(){
 		try{
