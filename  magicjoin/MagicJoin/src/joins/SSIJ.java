@@ -26,13 +26,13 @@ import stream.HybridjoinStartUpdatesStream;
 public class SSIJ {
 	private static final int QUEUE_SIZE = 0;
 	//this buffer is used to store incoming update tuples before load them into the Input Buffer
-	public static LinkedBlockingQueue<MeshJoinObject> inBuffer=new LinkedBlockingQueue<MeshJoinObject>();
+	public static BPlusTree inBuffer=new BPlusTree(6);
 	//Input Buffer (use ArrayBlockingQueue due to its size
 
 		
 	public Connection connectDB(){
 		Connection conn=null;
-		try{
+		try{  
 		
 			String userName = "root";
 			String password = "sunshine";
