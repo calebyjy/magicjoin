@@ -18,10 +18,10 @@ import objects.HybridJoinObject;
 import objects.MeshJoinObject;
 import stream.HybridjoinStartUpdatesStream;
 /**
- * This program measures the waiting time and processing time in HYBRIDJOIN. In addition this also
+ * This program measures the waiting time and processing time in HYBRIDJOIN with Single Linked Queue. In addition this also
  * calculates the processing cost for each loop iteration that is used to calculate the
  * service rate. 
- * @author asif
+ * @author asif,Guo
  *
  */
 public class HybridJoinPlus {

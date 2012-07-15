@@ -27,7 +27,7 @@ public class HybridJoin {
 	public static final int HASH_SIZE=317597;
 	public static final int QUEUE_SIZE=HASH_SIZE;
 	public static final int STREAM_SIZE=50000;
-	public static final int DISK_RELATION_SIZE=10000000;
+	public static final int DISK_RELATION_SIZE=20000000;
 	public static final int PAGE_SIZE=500;
 	public static final int MIN_KEY=1;
 	public static final int MAX_KEY=DISK_RELATION_SIZE;
