@@ -3,6 +3,7 @@ package joins;
 import java.util.Random;  
 
 public class BPlusTree  {  
+	protected int size=0;
       
     /** ¸ù½Úµã */  
     protected Node root;  

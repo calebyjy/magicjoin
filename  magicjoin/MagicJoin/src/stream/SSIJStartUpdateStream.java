@@ -8,7 +8,7 @@ import joins.SSIJ;
 
 /***
  * This program generates the benchmark that we used to test the performance of 
- * our HYBRIDJOIN. As mentioned in the paper our benchmark contains two characteristics.
+ * our SSIJ. As mentioned in the paper our benchmark contains two characteristics.
  * (a) The rate of selling the product (80/20 Rule)
  * (b) The flow of selling transactions (Self-similar and bursty)
  * Our benchmark implements the Zipfian distribution which is one kind of Power's Law.
@@ -86,14 +86,14 @@ public class SSIJStartUpdateStream extends Thread implements Comparable<Object>{
 			}
 			while(tuple<myQueue.totalCurrentBandwidth){
 				tupleValue=generator.getNextDistributionValue();
-				if(tupleValue>=1&& tupleValue<HybridJoin.DISK_RELATION_SIZE){
+				if(tupleValue>=1&& tupleValue<SSIJ.DISK_RELATION_SIZE){
 					start=System.nanoTime();
-					HybridJoin.streamBuffer.put(new MeshJoinObject(tupleValue,tupleValue,tupleValue,tupleValue,tupleValue,System.nanoTime()));
+					SSIJ.sBuffer.put(new SSIJObject(tupleValue,tupleValue,tupleValue,tupleValue,tupleValue,System.nanoTime()));
 					stop=System.nanoTime();
 					CS_per_Iteration+=stop-start;
 					count++;
-					if(count==HybridJoin.STREAM_SIZE){
-						HybridJoin.CS[HybridJoin.CS_index++]=CS_per_Iteration/count;
+					if(count==SSIJ.STREAM_SIZE){
+						SSIJ.CS[SSIJ.CS_index++]=CS_per_Iteration/count;
 						CS_per_Iteration=0;
 						count=0;
 					}

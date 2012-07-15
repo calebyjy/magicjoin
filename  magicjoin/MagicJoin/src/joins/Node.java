@@ -81,6 +81,9 @@ public class Node {
         if (isLeaf){  
             //不需要分裂，直接插入或更新  
             if (contains(key) || entries.size() < tree.getOrder()){  
+            	if(!contains(key)){
+            		tree.size++;
+            	}
                 insertOrUpdate(key, obj);  
                 if (parent != null) {  
                     //更新父节点  
@@ -115,6 +118,7 @@ public class Node {
                 int rightSize = (tree.getOrder() + 1) / 2;  
                 //复制原节点关键字到分裂出来的新节点  
                 insertOrUpdate(key, obj);  
+        		tree.size++;
                 for (int i = 0; i < leftSize; i++){  
                     left.getEntries().add(entries.get(i));  
                 }  
@@ -376,10 +380,12 @@ public class Node {
             //如果既是叶子节点又是跟节点，直接删除  
             if (isRoot) {  
                 remove(key);  
+                tree.size--;
             }else {  
                 //如果关键字数大于M / 2，直接删除  
                 if (entries.size() > tree.getOrder() / 2 && entries.size() > 2) {  
                     remove(key);  
+                    tree.size--;
                 }else {  
                     //如果自身关键字数小于M / 2，并且前节点关键字数大于M / 2，则从其处借补  
                     if (previous != null   
@@ -392,6 +398,7 @@ public class Node {
                         //添加到首位  
                         entries.add(0, entry);  
                         remove(key);  
+                        tree.size--;
                     //如果自身关键字数小于M / 2，并且后节点关键字数大于M / 2，则从其处借补     
                     }else if (next != null   
                             && next.getEntries().size() > tree.getOrder() / 2  
@@ -401,7 +408,8 @@ public class Node {
                         next.getEntries().remove(entry);  
                         //添加到末尾  
                         entries.add(entry);  
-                        remove(key);  
+                        remove(key);
+                        tree.size--;
                     //否则需要合并叶子节点      
                     }else {  
                         //同前面节点合并  
@@ -413,6 +421,7 @@ public class Node {
                                 entries.add(0, previous.getEntries().get(i));  
                             }  
                             remove(key);  
+                            tree.size--;
                             previous.setParent(null);  
                             previous.setEntries(null);  
                             parent.getChildren().remove(previous);  
@@ -436,7 +445,8 @@ public class Node {
                                 //从首位开始添加到末尾  
                                 entries.add(next.getEntries().get(i));  
                             }  
-                            remove(key);  
+                            remove(key); 
+                            tree.size--;
                             next.setParent(null);  
                             next.setEntries(null);  
                             parent.getChildren().remove(next);  

@@ -16,6 +16,7 @@ import org.apache.commons.collections15.multimap.MultiHashMap;
 import sizeof.agent.SizeOfAgent;
 import objects.HybridJoinObject;
 import objects.MeshJoinObject;
+import objects.SSIJObject;
 import stream.HybridjoinStartUpdatesStream;
 /**
  * This program measures the waiting time and processing time for the Semi-Stream Index Join. In addition this also
@@ -24,10 +25,21 @@ import stream.HybridjoinStartUpdatesStream;
  *
  */
 public class SSIJ {
-	private static final int QUEUE_SIZE = 0;
+	public static final int DISK_RELATION_SIZE=20000000;
+	public static final int STREAM_SIZE=50000;
+	public static final int IB_THRESH=4000;
+	public static final int SB_THRESH=22000;
+
+	
 	//this buffer is used to store incoming update tuples before load them into the Input Buffer
-	public static BPlusTree inBuffer=new BPlusTree(6);
-	//Input Buffer (use ArrayBlockingQueue due to its size
+	public static LinkedBlockingQueue<SSIJObject> sBuffer=new LinkedBlockingQueue<SSIJObject>();
+	//Input Buffer 
+	public static BPlusTree IB=new BPlusTree(6);
+	//Stream Buffer
+	public static BPlusTree SB=new BPlusTree(6);
+	//Cached Relation
+	public static BPlusTree CR=new BPlusTree(6);
+	
 
 		
 	public Connection connectDB(){
@@ -65,8 +77,14 @@ public class SSIJ {
 	 * TODO: add benchmark condition and end-of-stream singal
 	 */
 	public void pendingPhase(){
-		
-		onlinePhase();
+		int sbSize=sBuffer.size();
+		for(int i=0; i<sbSize; i++){
+			SSIJObject so=sBuffer.poll();
+			IB.insertOrUpdate(so.attr1, so);
+		}
+		if(IB.size>IB_THRESH){
+			onlinePhase();
+		}
 	}
 	
 	public void onlinePhase(){
@@ -75,6 +93,9 @@ public class SSIJ {
 		 * if yes, join immediately
 		 * if no, store tuples into stream buffer for the join phase
 		 */
+		for(int i=0; i<IB.size; i++){
+			
+		}
 	}
 	
 	public void joinPhase(){
